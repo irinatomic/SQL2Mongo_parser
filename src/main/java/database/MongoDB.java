@@ -1,14 +1,18 @@
 package database;
 
 import com.mongodb.*;
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import com.mongodb.client.*;
 import org.bson.Document;
 import utils.Constants;
 
 import java.util.Arrays;
+
+/*
+select * from employees =
+- db.employees.find({})
+- db.employees.aggregate().match({})
+ */
 
 public class MongoDB {
 
@@ -27,6 +31,35 @@ public class MongoDB {
         connectToDatabase();
 
         query = "db.employees.find({})";
+
+        MongoDatabase database = connection.getDatabase("bp_tim58");
+        MongoCollection<Document> collection = database.getCollection("employees");
+        FindIterable<Document> results = collection.find(Document.parse("{}"));
+
+        for (Document document : results) {
+            try{
+                System.out.println(document.toJson());
+            } catch (Exception e){
+                //System.out.print(e);
+                terminateConnection();
+            }
+        }
+
+        MongoCursor<Document> cursor = database.getCollection("employees").aggregate(
+                Arrays.asList(
+                        Document.parse("{\n" + "$match: {} \n" + "}")
+                )
+        ).iterator();
+
+        while (cursor.hasNext()){
+            try{
+                Document d = cursor.next();
+                System.out.println(d.toJson());
+            } catch (Exception e) {
+                //System.out.print(e);
+                terminateConnection();
+            }
+        }
 
 //        MongoCursor<Document> cursor = database.getCollection("employees").aggregate(
 //                Arrays.asList(
