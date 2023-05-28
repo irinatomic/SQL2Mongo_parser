@@ -65,7 +65,7 @@ public class MongoDB {
                 String name = entry.getKey();
                 Object value = entry.getValue();
                 row.addField(name, value);
-                System.out.println("Name: " + name + ", Value: " + value);
+                //System.out.println("Name: " + name + ", Value: " + value);
             }
             rows.add(row);
         }

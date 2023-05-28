@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
     private ActionManager actionManager;
     private TextArea inputText;
     private CommandBar commandBar;
+    private JScrollPane tableScrollPane;
     private JTable jTable;
 
     private MainFrame(){ }
@@ -46,13 +47,14 @@ public class MainFrame extends JFrame {
     }
 
     private void initElements(){
-        inputText = new TextArea();
+        inputText = new TextArea("Type your SQL query here");
         commandBar = new CommandBar();
         jTable = new JTable();
-        jTable.setPreferredScrollableViewportSize(new Dimension(500, 400));
+        jTable.setPreferredScrollableViewportSize(new Dimension(500, 300));
         jTable.setFillsViewportHeight(true);
         jTable.setModel(AppCore.getInstance().getTableModel());
-        this.add(new JScrollPane(jTable));
+
+        tableScrollPane = new JScrollPane(jTable);
     }
 
     private void addElements(){
@@ -60,11 +62,16 @@ public class MainFrame extends JFrame {
         panel.setLayout(new BorderLayout());
         panel.add(inputText, BorderLayout.NORTH);
         panel.add(commandBar, BorderLayout.CENTER);
-        panel.add(jTable, BorderLayout.SOUTH);
+        panel.add(tableScrollPane, BorderLayout.SOUTH);
         add(panel);
     }
 
     public void setAppCore(AppCore appCore){
         this.appCore = appCore;
     }
+
+    public void updateTable(){
+        jTable.setModel(AppCore.getInstance().getTableModel());
+    }
+
 }

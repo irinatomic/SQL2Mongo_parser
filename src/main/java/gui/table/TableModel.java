@@ -1,6 +1,7 @@
 package gui.table;
 
 import data.Row;
+import gui.view.MainFrame;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -20,6 +21,8 @@ public class TableModel extends DefaultTableModel {
             dataVector.add(DefaultTableModel.convertToVector(rows.get(i).getFields().values().toArray()));
 
         setDataVector(dataVector, columnVector);
+        //Create an observable pattern for TableModel and JTable/MainFrame ?
+        MainFrame.getInstance().updateTable();
     }
 
     public void setRows(List<Row> rows){

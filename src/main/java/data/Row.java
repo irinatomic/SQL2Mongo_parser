@@ -3,7 +3,7 @@ package data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Getter
@@ -14,7 +14,7 @@ public class Row {
     private Map<String, Object> fields;
 
     public Row(){
-        this.fields = new HashMap<>();
+        this.fields = new LinkedHashMap<>();
     }
 
     public void addField(String fieldName, Object value){
