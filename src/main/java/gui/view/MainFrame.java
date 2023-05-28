@@ -1,30 +1,41 @@
-package gui.swing;
+package gui.view;
+
+import controller.ActionManager;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 
+@Getter
+@Setter
 public class MainFrame extends JFrame {
 
     private static MainFrame instance;
-    private JButton submitButton;
+    private ActionManager actionManager;
     private TextArea inputText;
+    private CommandBar commandBar;
     private JTable jTable;
 
     private MainFrame(){ }
 
     private void initialise(){
+        actionManager = new ActionManager();
+        initialiseGui();
+    }
 
+    private void initialiseGui(){
         this.setTitle("SQL to NOSQL converter");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        submitButton = new JButton("Submit query");
         inputText = new TextArea();
+        commandBar = new CommandBar();
         initTable();
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(inputText, BorderLayout.NORTH);
-        panel.add(submitButton, BorderLayout.CENTER);
+        panel.add(commandBar, BorderLayout.CENTER);
         panel.add(jTable, BorderLayout.SOUTH);
         add(panel);
 

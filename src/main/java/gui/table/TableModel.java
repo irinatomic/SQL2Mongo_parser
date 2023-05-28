@@ -1,4 +1,4 @@
-package gui.swing;
+package gui.table;
 
 import Data.Row;
 

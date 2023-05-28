@@ -1,6 +1,6 @@
 package gui;
 
-import gui.swing.MainFrame;
+import gui.view.MainFrame;
 import interfaces.Gui;
 
 public class SwingGui implements Gui {
