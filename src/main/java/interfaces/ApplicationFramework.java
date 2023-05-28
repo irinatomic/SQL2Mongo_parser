@@ -8,6 +8,7 @@ import lombok.Setter;
 public class ApplicationFramework {
 
     protected Gui gui;
+    protected Database db;
     //bice interfejs za MessageGenerator
     private static ApplicationFramework instance;
 
@@ -24,8 +25,9 @@ public class ApplicationFramework {
         this.gui.start();
     }
 
-    public void initialise(Gui gui){
+    public void initialise(Gui gui, Database db){
         this.gui = gui;
+        this.db = db;
         //bice i za MessageGenerator
     }
 }

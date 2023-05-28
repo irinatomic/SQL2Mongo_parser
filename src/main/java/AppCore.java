@@ -1,5 +1,8 @@
+import database.DBController;
+import database.MongoDB;
 import gui.SwingGui;
 import interfaces.ApplicationFramework;
+import interfaces.Database;
 import interfaces.Gui;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,11 +24,14 @@ public class AppCore {
 
     public static void main(String[] args) {
         Gui gui = new SwingGui();
+        Database db = new DBController();
         //interfejsi i njihove implementacije
         //trebace MessageGenerator za poruke greske (validator)
 
         ApplicationFramework appFramework = ApplicationFramework.getInstance();
-        appFramework.initialise(gui);
+        appFramework.initialise(gui, db);
         appFramework.run();
+
+        db.preformQuery("db.employees.find({})");
     }
 }
