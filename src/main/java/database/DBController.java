@@ -1,14 +1,16 @@
 package database;
 
+import data.Row;
 import interfaces.Database;
+import java.util.List;
 
 public class DBController implements Database {
 
     private MongoDB instance;
 
     @Override
-    public void preformQuery(String query) {
+    public List<Row> preformQuery(String query) {
         instance = MongoDB.getInstance();
-        instance.runQuery(query);
+        return instance.runQuery(query);
     }
 }

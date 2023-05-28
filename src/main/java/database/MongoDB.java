@@ -3,10 +3,14 @@ package database;
 import com.mongodb.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
+import data.Row;
 import org.bson.Document;
 import utils.Constants;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /*
 select * from employees =
@@ -27,68 +31,47 @@ public class MongoDB {
         return instance;
     }
 
-    public void runQuery(String query) {
+    //TODO: argument query will probably be changed into a 'MongoCursor<Document> cursor' which will be created by the Adapter
+    public List<Row> runQuery(String query) {
+
         connectToDatabase();
-
-        query = "db.employees.find({})";
-
         MongoDatabase database = connection.getDatabase("bp_tim58");
-        MongoCollection<Document> collection = database.getCollection("employees");
-        FindIterable<Document> results = collection.find(Document.parse("{}"));
 
-        for (Document document : results) {
-            try{
-                System.out.println(document.toJson());
-            } catch (Exception e){
-                //System.out.print(e);
-                terminateConnection();
-            }
-        }
+//        MongoCollection<Document> collection = database.getCollection("employees");
+//        FindIterable<Document> results = collection.find(Document.parse("{}"));
+//
+//        for (Document document : results) {
+//            try{
+//                System.out.println(document.toJson());
+//            } catch (Exception e){
+//                terminateConnection();
+//            }
+//        }
 
+        // send query to db
         MongoCursor<Document> cursor = database.getCollection("employees").aggregate(
                 Arrays.asList(
                         Document.parse("{\n" + "$match: {} \n" + "}")
                 )
         ).iterator();
 
+        // pack every document into a row
+        List<Row> rows = new ArrayList<>();
         while (cursor.hasNext()){
-            try{
-                Document d = cursor.next();
-                System.out.println(d.toJson());
-            } catch (Exception e) {
-                //System.out.print(e);
-                terminateConnection();
+            Row row = new Row();
+            row.setName("employees");
+            Document d = cursor.next();
+            for (Map.Entry<String, Object> entry : d.entrySet()) {
+                String name = entry.getKey();
+                Object value = entry.getValue();
+                row.addField(name, value);
+                System.out.println("Name: " + name + ", Value: " + value);
             }
+            rows.add(row);
         }
 
-//        MongoCursor<Document> cursor = database.getCollection("employees").aggregate(
-//                Arrays.asList(
-//                        Document.parse("{\n" +
-//                                "  $match: {first_name: \"Steven\", last_name: \"King\"}\n" +
-//                                "}"),
-//                        Document.parse("{\n" +
-//                                "  $lookup: {\n" +
-//                                "    from: \"employees\",\n" +
-//                                "    localField: \"department_id\",\n" +
-//                                "    foreignField: \"department_id\",\n" +
-//                                "    as: \"employeesInTheSameDepartment\"\n" +
-//                                "  }\n" +
-//                                "}"),
-//                        Document.parse("{ $unwind: \"$employeesInTheSameDepartment\" }"),
-//                        Document.parse("{ $project: {\n" +
-//                                "    \"employeesInTheSameDepartment.first_name\": 1,\n" +
-//                                "    \"employeesInTheSameDepartment.last_name\": 1\n" +
-//                                "  }\n" +
-//                                "}")
-//                )
-//        ).iterator();
-//
-//        while (cursor.hasNext()){
-//            Document d = cursor.next();
-//            System.out.println(d.toJson());
-//        }
-
         terminateConnection();
+        return rows;
     }
 
     private void connectToDatabase() {
@@ -102,6 +85,12 @@ public class MongoDB {
     }
 
     private void terminateConnection(){
-        this.connection.close();
+        try{
+            connection.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            connection = null;
+        }
     }
 }
