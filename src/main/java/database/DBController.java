@@ -1,6 +1,6 @@
 package database;
 
-import data.Row;
+import database.data.Row;
 import interfaces.Database;
 import java.util.List;
 

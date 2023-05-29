@@ -1,4 +1,4 @@
-package controller;
+package gui.controller;
 
 import lombok.Getter;
 import lombok.Setter;

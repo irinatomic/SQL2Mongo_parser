@@ -1,7 +1,6 @@
-package controller;
+package gui.controller;
 
 import gui.view.MainFrame;
-
 import java.awt.event.ActionEvent;
 
 public class SubmitAction extends AbstractButtonAction{

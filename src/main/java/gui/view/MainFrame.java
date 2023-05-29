@@ -1,7 +1,7 @@
 package gui.view;
 
 import app.AppCore;
-import controller.ActionManager;
+import gui.controller.ActionManager;
 import lombok.Getter;
 import lombok.Setter;
 

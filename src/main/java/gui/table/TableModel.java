@@ -1,6 +1,6 @@
 package gui.table;
 
-import data.Row;
+import database.data.Row;
 import gui.view.MainFrame;
 
 import javax.swing.table.DefaultTableModel;

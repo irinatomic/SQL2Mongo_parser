@@ -1,4 +1,4 @@
-package data;
+package database.data;
 
 import lombok.Getter;
 import lombok.Setter;

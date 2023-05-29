@@ -1,8 +1,7 @@
 package app;
 
 import gui.view.MainFrame;
-import interfaces.ApplicationFramework;
-import interfaces.Database;
+import interfaces.*;
 
 public class Main {
 

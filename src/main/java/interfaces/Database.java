@@ -1,6 +1,6 @@
 package interfaces;
 
-import data.Row;
+import database.data.Row;
 import java.util.List;
 
 public interface Database {
