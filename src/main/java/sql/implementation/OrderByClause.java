@@ -9,6 +9,7 @@ import java.util.Map;
 @Getter
 public class OrderByClause extends Token {
 
+    //int: 1 (ASC) or -1 (DESC)
     private Map<String, Integer> parameters;
 
     public OrderByClause(Token parent) {

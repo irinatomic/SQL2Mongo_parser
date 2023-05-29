@@ -3,18 +3,28 @@ package sql.composite;
 import lombok.Getter;
 import lombok.Setter;
 
-/* nasledivo (Query and WhereClause)
-*  nema lista dece vec samo 1 dete
-* */
+import java.util.ArrayList;
+import java.util.List;
+
+// nasledivo (Query and WhereClause)
 
 @Getter
 @Setter
-public class TokenComposite extends Token {
+public abstract class TokenComposite extends Token {
 
-    protected Token child;
+    protected List<Token> children;
 
     public TokenComposite(Token parent) {
         super(parent);
+        this.children = new ArrayList<>();
     }
 
+    public void removeChild(Token child){
+        if(child != null && !children.isEmpty())
+            children.remove(child);
+    }
+
+    public void addChild(Token child){
+        children.add(child);
+    }
 }
