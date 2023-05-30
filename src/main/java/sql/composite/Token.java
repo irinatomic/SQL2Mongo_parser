@@ -2,6 +2,7 @@ package sql.composite;
 
 import lombok.Getter;
 import lombok.Setter;
+import sql.SQLImplemet;
 
 /* Composite pattern: klasa koja je ujedno i natklasa a kad se instancira je nenaslediva (leaf)
 *  Koristimo da bi podrzali subquerije u okviru klauzule WHERE.
@@ -10,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class Token {
+public abstract class Token extends SQLImplemet {
 
     private Token parent;
 

@@ -20,4 +20,9 @@ public class HavingClause extends Token {
     public HavingClause(Token parent) {
         super(parent);
     }
+
+    @Override
+    public void parseQueryToSQLObject(String query) {
+
+    }
 }

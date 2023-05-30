@@ -9,6 +9,7 @@ public class ApplicationFramework {
 
     protected Gui gui;
     protected Database db;
+    protected SQL sql;
     //bice interfejs za MessageGenerator
     private static ApplicationFramework instance;
 
@@ -25,9 +26,10 @@ public class ApplicationFramework {
         this.gui.start();
     }
 
-    public void initialise(Gui gui, Database db){
+    public void initialise(Gui gui, Database db, SQL sql){
         this.gui = gui;
         this.db = db;
+        this.sql = sql;
         //bice i za MessageGenerator
     }
 }

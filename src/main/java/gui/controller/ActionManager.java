@@ -1,10 +1,8 @@
 package gui.controller;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class ActionManager {
 
     private SubmitAction submitAction;

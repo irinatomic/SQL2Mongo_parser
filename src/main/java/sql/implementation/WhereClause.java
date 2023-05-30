@@ -2,8 +2,7 @@ package sql.implementation;
 
 import lombok.Getter;
 import operators.Logical;
-import sql.composite.Token;
-import sql.composite.TokenComposite;
+import sql.composite.*;
 import sql.implementation.helpers.Inequality;
 
 @Getter
@@ -19,5 +18,10 @@ public class WhereClause extends TokenComposite {
 
     public WhereClause(Token parent) {
         super(parent);
+    }
+
+    @Override
+    public void parseQueryToSQLObject(String query) {
+
     }
 }

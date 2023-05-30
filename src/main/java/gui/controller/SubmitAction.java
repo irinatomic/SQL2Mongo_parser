@@ -1,6 +1,7 @@
 package gui.controller;
 
 import gui.view.MainFrame;
+import interfaces.ApplicationFramework;
 import java.awt.event.ActionEvent;
 
 public class SubmitAction extends AbstractButtonAction{
@@ -13,10 +14,7 @@ public class SubmitAction extends AbstractButtonAction{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         String query = MainFrame.getInstance().getInputText().getText();
-        MainFrame.getInstance().getInputText().setText("");
-
-
+        ApplicationFramework.getInstance().getSql().parseQueryToSQLObject(query);
     }
 }

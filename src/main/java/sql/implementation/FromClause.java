@@ -22,4 +22,8 @@ public class FromClause extends Token {
         this.joins = new ArrayList<>();
     }
 
+    @Override
+    public void parseQueryToSQLObject(String query) {
+
+    }
 }

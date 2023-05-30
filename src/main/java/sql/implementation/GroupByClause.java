@@ -1,10 +1,10 @@
 package sql.implementation;
 
+import lombok.Getter;
 import sql.composite.Token;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Getter
 public class GroupByClause extends Token {
 
     private List<String> parameters;
@@ -14,4 +14,8 @@ public class GroupByClause extends Token {
         this.parameters = new ArrayList<>();
     }
 
+    @Override
+    public void parseQueryToSQLObject(String query) {
+
+    }
 }

@@ -3,8 +3,7 @@ package sql.implementation;
 import lombok.Getter;
 import sql.implementation.helpers.SelectParameter;
 import sql.composite.Token;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Getter
 public class SelectClause extends Token {
@@ -14,5 +13,10 @@ public class SelectClause extends Token {
     public SelectClause(Token parent) {
         super(parent);
         this.parameters = new ArrayList<>();
+    }
+
+    @Override
+    public void parseQueryToSQLObject(String query) {
+
     }
 }
