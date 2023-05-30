@@ -16,6 +16,13 @@ public class SelectParameter {
 
     private void extractValues(String text){
 
+        if(text.equals("*")){
+            this.name = "*";
+            this.alias = null;
+            this.aggregateFunction = null;
+            return;
+        }
+
         if(text.contains("(")){
             String af = text.substring(0, text.indexOf("(")).trim();
             this.aggregateFunction = Aggregate.getElement(af);
@@ -25,12 +32,13 @@ public class SelectParameter {
             this.name = text.substring(0, text.indexOf(" "));
         }
 
-        if(text.contains("as") || text.contains("AS")){
+        if(text.contains("as"))
             this.alias = text.substring(text.indexOf("as") + 2).trim();
+        else if(text.contains("AS"))
             this.alias = text.substring(text.indexOf("AS") + 2).trim();
-        } else
+        else
             this.alias = null;
 
-        System.out.println("SELECTPAMARETER: " + this.name + "_" + this.alias + "_" + this.aggregateFunction);
+        //System.out.println("SELECT PAMARETER: " + this.name + "_" + this.alias + "_" + this.aggregateFunction);
     }
 }
