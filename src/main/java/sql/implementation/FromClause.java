@@ -24,6 +24,6 @@ public class FromClause extends Token {
 
     @Override
     public void parseQueryToSQLObject(String query) {
-
+        System.out.println(query);
     }
 }

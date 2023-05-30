@@ -6,6 +6,9 @@ import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 import sql.composite.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Getter
 public class Query extends TokenComposite {
 
@@ -15,6 +18,11 @@ public class Query extends TokenComposite {
 
     @Override
     public void parseQueryToSQLObject(String query) {
+
+        /*  JSQL works nicely for our logic except for the FROM clause
+        because it reterns only the top level value, the joins have to be
+        searched for recursively (double work for our logic to later unpack
+        it into our own Join objects) */
 
         try {
             query = query.toLowerCase();
@@ -36,11 +44,8 @@ public class Query extends TokenComposite {
                         this.addChild(sc);
                     }
 
-                    if(plainSelect.getFromItem() != null){
-                        FromClause fc = new FromClause(this);
-                        fc.parseQueryToSQLObject(plainSelect.getFromItem().toString());
-                        this.addChild(fc);
-                    }
+                    // From clause -> custom
+                    extractFromClause(query);
 
                     // Where clause
                     if (plainSelect.getWhere() != null) {
@@ -75,6 +80,28 @@ public class Query extends TokenComposite {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void extractFromClause(String query){
+
+        query = query.toLowerCase();
+        // Hack: am unable to create a regex to match the end of string
+        // but it matches the where so we add to a copy of the query string
+        query += " where";
+
+        String patternS = "\\bfrom\\b(.*?)\\b(?:where\\b|$)";
+        Pattern pattern = Pattern.compile(patternS, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(query);
+
+        // Find the matching substring
+        if (matcher.find()) {
+            String extractedString = matcher.group(1).trim();
+            FromClause fc = new FromClause(this);
+            fc.parseQueryToSQLObject(extractedString.trim());
+            this.addChild(fc);
+        }
+
     }
 
 }

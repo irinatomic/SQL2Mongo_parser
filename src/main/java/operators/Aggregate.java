@@ -5,7 +5,9 @@ public enum Aggregate  {
     $min("min"),
     $max("max"),
     $sum("sum"),
-    $avg("avg");
+    $avg("avg"),
+    $upper("upper"),
+    $lower("lower");
 
     private final String op;
 

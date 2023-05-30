@@ -29,6 +29,7 @@ public class SelectParameter {
             this.name = text.substring(text.indexOf("(")+1, text.indexOf(")"));
         } else {
             this.aggregateFunction = null;
+            text += " ";
             this.name = text.substring(0, text.indexOf(" "));
         }
 
@@ -39,6 +40,6 @@ public class SelectParameter {
         else
             this.alias = null;
 
-        //System.out.println("SELECT PAMARETER: " + this.name + "_" + this.alias + "_" + this.aggregateFunction);
+        System.out.println("SELECT PAMARETER: " + this.name + "_" + this.alias + "_" + this.aggregateFunction);
     }
 }
