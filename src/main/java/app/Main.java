@@ -11,7 +11,7 @@ public class Main {
         mainFrame.setAppCore(appCore);
 
         //TESTING
-        Database db = ApplicationFramework.getInstance().getDb();
-        appCore.getTableModel().setRows(db.preformQuery(""));
+//        Database db = ApplicationFramework.getInstance().getDb();
+//        appCore.getTableModel().setRows(db.preformQuery(""));
     }
 }

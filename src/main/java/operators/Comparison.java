@@ -1,8 +1,6 @@
 package operators;
 
-import interfaces.Operators;
-
-public enum Comparison implements Operators {
+public enum Comparison {
 
     $eq("="),       $ne("<>"),
     $gt(">"),       $gte(">="),
@@ -16,7 +14,7 @@ public enum Comparison implements Operators {
         this.op = op;
     }
 
-    public Comparison fromString(String input) {
+    public static Comparison getElement(String input) {
         input = input.toLowerCase();
         for (Comparison c : Comparison.values()) {
             if (c.op.equals(input))

@@ -17,6 +17,7 @@ public class Query extends TokenComposite {
     public void parseQueryToSQLObject(String query) {
 
         try {
+            query = query.toLowerCase();
             Statement statement = CCJSqlParserUtil.parse(query);
 
             if (statement instanceof Select) {
@@ -29,29 +30,44 @@ public class Query extends TokenComposite {
                     PlainSelect plainSelect = (PlainSelect) selectBody;
 
                     // Select clause
-                    System.out.println("SELECT clause: " + plainSelect.getSelectItems());
+                    if(!plainSelect.getSelectItems().isEmpty()){
+                        SelectClause sc = new SelectClause(this);
+                        sc.parseQueryToSQLObject(plainSelect.getSelectItems().toString());
+                        this.addChild(sc);
+                    }
 
-                    // From clause
-                    System.out.println("FROM clause: " + plainSelect.getFromItem());
+                    if(plainSelect.getFromItem() != null){
+                        FromClause fc = new FromClause(this);
+                        fc.parseQueryToSQLObject(plainSelect.getFromItem().toString());
+                        this.addChild(fc);
+                    }
 
                     // Where clause
                     if (plainSelect.getWhere() != null) {
-                        System.out.println("WHERE clause: " + plainSelect.getWhere());
+                        WhereClause wc = new WhereClause(this);
+                        wc.parseQueryToSQLObject(plainSelect.getWhere().toString());
+                        this.addChild(wc);
                     }
 
                     // Group By clause
                     if (plainSelect.getGroupBy() != null) {
-                        System.out.println("GROUP BY clause: " + plainSelect.getGroupBy());
+                        GroupByClause gbc = new GroupByClause(this);
+                        gbc.parseQueryToSQLObject(plainSelect.getGroupBy().toString());
+                        this.addChild(gbc);
                     }
 
                     // Having clause
                     if (plainSelect.getHaving() != null) {
-                        System.out.println("HAVING clause: " + plainSelect.getHaving());
+                        HavingClause hc = new HavingClause(this);
+                        hc.parseQueryToSQLObject(plainSelect.getHaving().toString());
+                        this.addChild(hc);
                     }
 
                     // Order By clause
                     if (plainSelect.getOrderByElements() != null) {
-                        System.out.println("ORDER BY clause: " + plainSelect.getOrderByElements());
+                        OrderByClause obc = new OrderByClause(this);
+                        obc.parseQueryToSQLObject(plainSelect.getOrderByElements().toString());
+                        this.addChild(obc);
                     }
 
                 }
@@ -59,7 +75,6 @@ public class Query extends TokenComposite {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 }

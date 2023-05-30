@@ -1,8 +1,6 @@
 package operators;
 
-import interfaces.Operators;
-
-public enum Aggregate implements Operators {
+public enum Aggregate  {
 
     $min("min"),
     $max("max"),
@@ -15,10 +13,9 @@ public enum Aggregate implements Operators {
         this.op = op;
     }
 
-    public Aggregate fromString(String input) {
-        input = input.toLowerCase();
+    public static Aggregate getElement(String input) {
         for (Aggregate a : Aggregate.values()) {
-            if (a.op.equals(input))
+            if (a.op.equalsIgnoreCase(input))
                 return a;
         }
         return null;

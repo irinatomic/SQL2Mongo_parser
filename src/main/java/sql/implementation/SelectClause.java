@@ -17,6 +17,13 @@ public class SelectClause extends Token {
 
     @Override
     public void parseQueryToSQLObject(String query) {
+        query = query.replace("[", "").replace("]", "");
+        query += ",";
+        String[] params = query.split(",");
 
+        for(String p : params){
+            SelectParameter sp = new SelectParameter(p.trim());
+            this.parameters.add(sp);
+        }
     }
 }

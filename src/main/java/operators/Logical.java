@@ -1,8 +1,6 @@
 package operators;
 
-import interfaces.Operators;
-
-public enum Logical implements Operators{
+public enum Logical {
 
     $or("or"),
     $and("and");
@@ -13,7 +11,7 @@ public enum Logical implements Operators{
         this.op = op;
     }
 
-    public Logical fromString(String input) {
+    public static Logical getElement(String input) {
         input = input.toLowerCase();
         for (Logical l : Logical.values()) {
             if (l.op.equals(input))
