@@ -1,17 +1,25 @@
 package sql.implementation;
 
 import sql.composite.Token;
+import sql.implementation.helpers.Join;
+import java.util.*;
 
-/* Can have up to 32 parameters
-*  from hr.employees e join hr.departments d using (department_id) join hr.locations l using (location_id)
-*  -> will translate to 2 $lookup in the Mongo query
+/* We will remember the starting table (one we're doing the query against)
+*  Every join translates to a $lookup in Mongo -> list of Joins
+*  So every join contains:
+*  - name of table 2
+*  - argument from table 1
+*  - argument from table 2
 * */
+
 public class FromClause extends Token {
 
-
+    private String table;                               //table against which we're doing the query
+    List<Join> joins;
 
     public FromClause(Token parent) {
         super(parent);
+        this.joins = new ArrayList<>();
     }
 
 }
