@@ -40,6 +40,6 @@ public class SelectParameter {
         else
             this.alias = null;
 
-        System.out.println("SELECT PAMARETER: " + this.name + "_" + this.alias + "_" + this.aggregateFunction);
+        //System.out.println("SELECT PAMARETER: " + this.name + "_" + this.alias + "_" + this.aggregateFunction);
     }
 }
