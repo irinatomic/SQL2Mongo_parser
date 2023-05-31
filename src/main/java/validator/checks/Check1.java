@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Check1 extends Check {
 
+    //Must have SELECT and FROM clauses
+
     @Override
     public boolean checkRule(){
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();

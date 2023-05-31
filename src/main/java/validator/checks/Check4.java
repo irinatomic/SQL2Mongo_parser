@@ -11,24 +11,35 @@ import sql.implementation.helpers.JoinClause;
 
 public class Check4 extends Check {
 
+    // JOIN clauses must have either USING or ON
+
     @Override
     public boolean checkRule() {
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
         List<Token> clauses = query.getChildren();
-        FromClause fromClause;
 
+        // Unknown error
+        if(clauses.isEmpty())
+            ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.UNKNOWN);
+
+        // Will not be null because it passed the Check1
+        FromClause fromClause = null;
         for(Token t : clauses){
             if(t instanceof FromClause){
                 fromClause = (FromClause) t;
-                List<JoinClause> joins = fromClause.getJoins();
-                for(JoinClause j : joins){
+                break;
+            }
+        }
 
-                    if (j.getFieldTable1() == "" && j.getFieldTable2() == ""){
-                        ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.NO_JOIN_CONDITION);
-                        return false;
-                    }
-                }
+        List<JoinClause> joins = fromClause.getJoins();
+        if(joins == null || joins.isEmpty())
+            return true;
+
+        for(JoinClause j : joins){
+            if (j.getFieldTable1().equals(" ") && j.getFieldTable2().equals(" ")){
+                ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.NO_JOIN_CONDITION);
+                return false;
             }
         }
 

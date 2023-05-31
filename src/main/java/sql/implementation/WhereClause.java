@@ -14,7 +14,7 @@ public class WhereClause extends Token {
     // Logical same to HavingClause: left is an Inequality and right can be another subpart of the Where clause
     // Inside the inequality, on the right, we can have a subquery
 
-    private String originalString;
+    private String originalText;
     private List<WhereParameter> params;
 
     public WhereClause(Token parent) {
@@ -24,7 +24,7 @@ public class WhereClause extends Token {
 
     @Override
     public void parseQueryToSQLObject(String query) {
-        this.originalString = query;
+        this.originalText = query;
 
         query += " ";
         String[] words = query.split(" ");
@@ -55,8 +55,8 @@ public class WhereClause extends Token {
         this.params.add(wp);
 
         //TEST
-        System.out.println("WHERE CLAUSE: ");
-        for(WhereParameter wp2 : params)
-            System.out.println(wp2);
+//        System.out.println("WHERE CLAUSE: ");
+//        for(WhereParameter wp2 : params)
+//            System.out.println(wp2);
     }
 }
