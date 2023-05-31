@@ -8,6 +8,7 @@ import java.util.*;
 @Getter
 public class SelectClause extends Token {
 
+    private String originalText;
     private List<SelectParameter> parameters;
 
     public SelectClause(Token parent) {
@@ -17,6 +18,7 @@ public class SelectClause extends Token {
 
     @Override
     public void parseQueryToSQLObject(String query) {
+        this.originalText = query;
         query = query.replace("[", "").replace("]", "");
         query += ",";
         String[] params = query.split(",");

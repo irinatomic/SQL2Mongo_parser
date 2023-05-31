@@ -1,5 +1,7 @@
 package validator.checks;
 
+import errors.Error;
+import interfaces.ApplicationFramework;
 import sql.SQLImplemet;
 import sql.composite.Token;
 import sql.implementation.*;
@@ -23,10 +25,9 @@ public class Check1 extends Check {
                 hasFrom = true;
         }
 
-//        // proveri da li je ispunjen uslov
-//        if(!hasSelect || !hasFrom)
-//            //ispali error (message generator)
-
+        // proveri da li je ispunjen uslov
+        if(!hasSelect || !hasFrom)
+            ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.NO_MANDATORY_CLAUSES);
 
         return hasSelect && hasFrom;
     }

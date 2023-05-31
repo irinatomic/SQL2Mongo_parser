@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 @Getter
 public class GroupByClause extends Token {
 
+    private String originalText;
     private List<String> parameters;
 
     public GroupByClause(Token parent) {
@@ -17,6 +18,7 @@ public class GroupByClause extends Token {
 
     @Override
     public void parseQueryToSQLObject(String query) {
+        this.originalText = query;
         query = query.replace("GROUP BY", "");
         query += ",";
 

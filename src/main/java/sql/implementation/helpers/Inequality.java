@@ -1,8 +1,8 @@
 package sql.implementation.helpers;
 
 import lombok.Getter;
-import operators.Aggregate;
-import operators.Comparison;
+import sql.operators.Aggregate;
+import sql.operators.Comparison;
 
 @Getter
 public class Inequality {

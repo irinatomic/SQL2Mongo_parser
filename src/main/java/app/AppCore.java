@@ -1,6 +1,7 @@
 package app;
 
 import database.DBController;
+import errors.ErrorGeneratorImpl;
 import gui.SwingGui;
 import gui.table.TableModel;
 import interfaces.*;
@@ -18,6 +19,7 @@ public class AppCore {
     private Database db;
     private SQL sql;
     private Validator validator;
+    private ErrorGenerator errorGenerator;
     private TableModel tableModel;
 
     private AppCore(){
@@ -26,9 +28,10 @@ public class AppCore {
         this.sql = new SQLImplemet();
         this.validator = new ValidatorImpl();
         this.tableModel = new TableModel();
+        this.errorGenerator = new ErrorGeneratorImpl();
 
         ApplicationFramework appFramework = ApplicationFramework.getInstance();
-        appFramework.initialise(gui, db, sql, validator);
+        appFramework.initialise(gui, db, sql, validator, errorGenerator);
         appFramework.run();
     }
 

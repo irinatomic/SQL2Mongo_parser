@@ -1,9 +1,9 @@
 package sql.implementation;
 
 import lombok.Getter;
-import operators.*;
 import sql.composite.Token;
 import sql.implementation.helpers.Inequality;
+import sql.operators.Logical;
 
 @Getter
 public class HavingClause extends Token {
@@ -13,6 +13,7 @@ public class HavingClause extends Token {
     // second half is another HavingClause where left is the inequality and right is NULL
     // recursion until the right is NULL
 
+    private String originalText;
     private Inequality left;
     private Logical logicalCentre;
     private Object right;
@@ -23,6 +24,6 @@ public class HavingClause extends Token {
 
     @Override
     public void parseQueryToSQLObject(String query) {
-
+        this.originalText = query;
     }
 }
