@@ -12,7 +12,8 @@ public class Check1 extends Check {
 
     @Override
     public boolean checkRule(){
-        Query query = SQLImplemet.getCurrQuery();
+        SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
+        Query query = sqlImplemet.getCurrQuery();
         List<Token> clauses = query.getChildren();
 
         boolean hasSelect = false;

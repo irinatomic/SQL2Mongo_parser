@@ -1,7 +1,6 @@
 package validator.checks;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import errors.Error;
 import interfaces.ApplicationFramework;
@@ -14,7 +13,8 @@ public class Check2 extends Check {
 
     @Override
     public boolean checkRule() {
-        Query query = SQLImplemet.getCurrQuery();
+        SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
+        Query query = sqlImplemet.getCurrQuery();
         List<Token> clauses = query.getChildren();
         SelectClause selectClause;
         GroupByClause groupByClause;

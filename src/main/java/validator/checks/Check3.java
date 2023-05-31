@@ -14,7 +14,8 @@ public class Check3 extends Check {
 
     @Override
     public boolean checkRule() {
-        Query query = SQLImplemet.getCurrQuery();
+        SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
+        Query query = sqlImplemet.getCurrQuery();
         List<Token> clauses = query.getChildren();
         WhereClause whereClause;
         //System.out.println("111111");
