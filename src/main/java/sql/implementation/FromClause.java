@@ -56,7 +56,7 @@ public class FromClause extends Token {
 
     private void convertToJoinClause(Join j){
         String leftTableAlias = fromTable;
-        String leftField, rightField;
+        String leftField = "", rightField = "";
 
         if(fromTable.contains(" "))
             leftTableAlias = fromTable.substring(fromTable.indexOf(" ")+1);
@@ -69,7 +69,7 @@ public class FromClause extends Token {
             leftField = using;
             rightField = using;
 
-        } else {
+        } else if(!j.getOnExpressions().isEmpty()){
             String on = j.getOnExpressions().toString();
             on = on.replace("[", "").replace("]", "");
             on = on.replaceAll("[()]", "");
@@ -79,7 +79,7 @@ public class FromClause extends Token {
 
             String lAlias = onParts[0].substring(0, onParts[0].indexOf("."));
             if(leftTableAlias.equals(lAlias)) {
-                leftField = onParts[0].substring(onParts[0].indexOf(".")+1);
+                 leftField = onParts[0].substring(onParts[0].indexOf(".")+1);
                  rightField = onParts[1].substring(onParts[1].indexOf(".")+1);
             } else {
                 rightField = onParts[0].substring(onParts[0].indexOf(".")+1);

@@ -15,6 +15,11 @@ public class SubmitAction extends AbstractButtonAction{
     @Override
     public void actionPerformed(ActionEvent e) {
         String query = MainFrame.getInstance().getInputText().getText();
+
+        //Parse query
         ApplicationFramework.getInstance().getSql().parseQueryToSQLObject(query);
+
+        //Validira
+        ApplicationFramework.getInstance().getValidator().validateQuery();
     }
 }
