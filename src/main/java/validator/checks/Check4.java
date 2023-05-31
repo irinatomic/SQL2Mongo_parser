@@ -2,6 +2,8 @@ package validator.checks;
 
 import java.util.List;
 
+import errors.Error;
+import interfaces.ApplicationFramework;
 import sql.SQLImplemet;
 import sql.composite.Token;
 import sql.implementation.*;
@@ -21,6 +23,7 @@ public class Check4 extends Check {
                 List<JoinClause> joins = fromClause.getJoins();
                 for(JoinClause j : joins){
                     if (j.getFieldTable1() == "" && j.getFieldTable2() == ""){
+                        ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.NO_JOIN_CONDITION);
                         return false;
                     }
                 }

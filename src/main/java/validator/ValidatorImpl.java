@@ -21,6 +21,10 @@ public class ValidatorImpl implements Validator {
         //izvucemo Query: SqlImplement.getQuery
         //prodjemo kroz listu provera i pozovemo funkciju check1.checkRule()
 
-        //ako nesto vrati false, kazemo break
+        for (Check c: checks){
+            if (!c.checkRule()){
+                break;
+            }
+        }
     }
 }
