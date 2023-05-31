@@ -1,26 +1,30 @@
 package sql.implementation.helpers;
 
 import lombok.Getter;
-import sql.operators.Aggregate;
 import sql.operators.Comparison;
 
 @Getter
 public class Inequality {
 
-    //values of Aggregate fields can be NULL
-    // right is an Object because it can be a String (regular case) or a subquery (Where clause)
+    // A > B
+    // sum(A) > B
+    // min(A) < max(B)
 
-    private String left;
-    private Aggregate aLeft;
+    private SelectParameter left;
     private Comparison comparison;
-    private Object right;
-    private Aggregate aRight;
+    private SelectParameter right;
 
-    public Inequality(String left, String aLeft, String comparison, Object right, String aRight) {
-        this.left = left;
-        this.aLeft = Aggregate.valueOf(aLeft);
+    public Inequality(String s){
+        s += " ";
+        String[] params = s.split(" ");
+        this.left = new SelectParameter(params[0]);
+        this.comparison = Comparison.getElement(params[1]);
+        this.right = new SelectParameter(params[2]);
+    }
+
+    public Inequality(String left, String comparison, String right) {
+        this.left = new SelectParameter(left);
         this.comparison = Comparison.valueOf(comparison);
-        this.right = right;
-        this.aRight = Aggregate.valueOf(aRight);
+        this.right = new SelectParameter(right);
     }
 }

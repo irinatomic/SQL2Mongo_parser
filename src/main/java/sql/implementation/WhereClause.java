@@ -12,6 +12,7 @@ public class WhereClause extends TokenComposite {
     // Logical same to HavingClause: left is an Inequality and right can be another subpart of the Where clause
     // Inside the inequality, on the right, we can have a subquery
 
+    private String originalString;
     private Inequality left;
     private Logical logicalCentre;
     private Object right;
@@ -22,6 +23,6 @@ public class WhereClause extends TokenComposite {
 
     @Override
     public void parseQueryToSQLObject(String query) {
-
+        this.originalString = query;
     }
 }

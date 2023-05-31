@@ -46,8 +46,11 @@ public class FromClause extends Token {
                 this.fromTable = plainSelect.getFromItem().toString();
                 List<Join> joins = plainSelect.getJoins();
 
-                for(Join j : joins)
-                    convertToJoinClause(j);
+                if(!joins.isEmpty()){
+                    for(Join j : joins)
+                        convertToJoinClause(j);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
