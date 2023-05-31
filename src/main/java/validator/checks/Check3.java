@@ -6,7 +6,7 @@ import sql.SQLImplemet;
 import sql.composite.Token;
 import sql.implementation.*;
 
-public class Check2 extends Check {
+public class Check3 extends Check {
 
     @Override
     public boolean checkRule() {
