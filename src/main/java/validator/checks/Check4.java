@@ -22,6 +22,7 @@ public class Check4 extends Check {
                 fromClause = (FromClause) t;
                 List<JoinClause> joins = fromClause.getJoins();
                 for(JoinClause j : joins){
+
                     if (j.getFieldTable1() == "" && j.getFieldTable2() == ""){
                         ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.NO_JOIN_CONDITION);
                         return false;

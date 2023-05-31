@@ -19,22 +19,22 @@ public class Check2 extends Check {
         SelectClause selectClause;
         GroupByClause groupByClause;
 
-        List<String> mustHave = new ArrayList<>(null);
+        List<String> mustHave = new ArrayList<>();
 
         for (Token t: clauses){
             if (t instanceof SelectClause){
                 selectClause = (SelectClause) t;
                 for (SelectParameter s: selectClause.getParameters()){
                     if (s.getAggregateFunction() == null){
-                        mustHave.add(s.getName());
-                        System.out.println("The answer is: " + s.getName());
+                        mustHave.add(s.getOriginalText());
                     }
                 }
             }
             if (t instanceof GroupByClause){
                 groupByClause = (GroupByClause) t;
-                for (String s: groupByClause.getParameters()){
-                    if (!mustHave.contains(s)){
+                System.out.println(groupByClause.getParameters());
+                for (String s: mustHave){
+                    if (!groupByClause.getParameters().contains(s)){
                         ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.GROUP_BY_ERROR);
                         return false;
                     }
