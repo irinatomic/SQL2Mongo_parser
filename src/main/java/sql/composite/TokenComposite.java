@@ -1,15 +1,13 @@
 package sql.composite;
 
 import lombok.Getter;
-import lombok.Setter;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-// nasledivo (Query and WhereClause)
+// nasledivo (only Query)
+// where clause has WhereParameters that has Inequalities
+// that Inequality can have a subquery
 
 @Getter
-@Setter
 public abstract class TokenComposite extends Token {
 
     protected List<Token> children;

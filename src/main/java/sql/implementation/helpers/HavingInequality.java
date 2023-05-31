@@ -4,28 +4,27 @@ import lombok.Getter;
 import sql.operators.Comparison;
 
 @Getter
-public class Inequality {
+public class HavingInequality {
 
-    // A > B
-    // sum(A) > B
-    // min(A) < max(B)
+    /* Inequality in having
+    * A > B
+    * sum(A) > B
+    * min(A) < max(B)
+     */
 
     private SelectParameter left;
     private Comparison comparison;
     private SelectParameter right;
 
-    public Inequality(String s){
+    public HavingInequality(String s){
         s += " ";
         String[] params = s.split(" ");
+
+        // Making a new select parameter (instead of searching for the matching one) so the code
+        // doesn't break before the validation if the user's hasn't put in the SELECT clause
         this.left = new SelectParameter(params[0]);
         this.comparison = Comparison.getElement(params[1]);
         this.right = new SelectParameter(params[2]);
-    }
-
-    public Inequality(String left, String comparison, String right) {
-        this.left = new SelectParameter(left);
-        this.comparison = Comparison.valueOf(comparison);
-        this.right = new SelectParameter(right);
     }
 
     @Override

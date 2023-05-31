@@ -1,7 +1,6 @@
 package sql.implementation;
 
 import lombok.Getter;
-import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
@@ -10,12 +9,15 @@ import sql.composite.*;
 @Getter
 public class Query extends TokenComposite {
 
+    private String text;
+
     public Query(Token parent) {
         super(parent);
     }
 
     @Override
     public void parseQueryToSQLObject(String query) {
+        this.text = query;
 
         /*  JSQL works nicely for our logic except for the FROM clause
         because it reterns only the top level value, the joins have to be
@@ -85,4 +87,8 @@ public class Query extends TokenComposite {
 
     }
 
+    @Override
+    public String toString() {
+        return text;
+    }
 }

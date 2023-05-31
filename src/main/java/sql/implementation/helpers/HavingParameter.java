@@ -6,16 +6,16 @@ import sql.operators.Logical;
 @Getter
 public class HavingParameter {
 
-    private Inequality left;
+    private HavingInequality left;
     private Logical logical;
 
     public HavingParameter(String left, String logical) {
-        this.left = new Inequality(left);
+        this.left = new HavingInequality(left);
         this.logical = Logical.getElement(logical);
     }
 
     @Override
     public String toString() {
-        return "HAVING PARAM left: " + left.toString() + " logical: " + logical;
+        return "HAVING PARAM [" + left.toString() + "] [" + logical + "]";
     }
 }
