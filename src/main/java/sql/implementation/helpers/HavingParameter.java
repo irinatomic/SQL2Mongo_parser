@@ -14,5 +14,8 @@ public class HavingParameter {
         this.logical = Logical.getElement(logical);
     }
 
-
+    @Override
+    public String toString() {
+        return "HAVING PARAM left: " + left.toString() + " logical: " + logical;
+    }
 }

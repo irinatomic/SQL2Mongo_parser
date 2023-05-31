@@ -28,8 +28,37 @@ public class HavingClause extends Token {
     public void parseQueryToSQLObject(String query) {
         this.originalText = query;
 
+        query += " ";
+        String[] words = query.split(" ");
 
+        int start = 0;
+        for(int i = 0; i < words.length; i++){
+            String curr = words[i];
+            if(curr.equalsIgnoreCase("and") || curr.equalsIgnoreCase("or")){
 
-        System.out.println(query);
+                String logical = curr;
+                String left = "";
+                for(int j = start; j < i; j++)
+                    left += words[j] + " ";
+
+                start = i+1;
+
+                HavingParameter hp = new HavingParameter(left, logical);
+                this.params.add(hp);
+            }
+        }
+
+        // for the last one
+        String left = "";
+        for(int j = start; j < words.length; j++)
+            left += words[j] + " ";
+
+        HavingParameter hp = new HavingParameter(left, "");
+        this.params.add(hp);
+
+        //TEST
+//        System.out.println("HAVING CLAUSE: ");
+//        for(HavingParameter hp2 : params)
+//            System.out.println(hp2);
     }
 }

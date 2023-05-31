@@ -44,4 +44,10 @@ public class SelectParameter {
 
         //System.out.println("SELECT PAMARETER: " + this.name + "_" + this.alias + "_" + this.aggregateFunction);
     }
+
+    @Override
+    public String toString() {
+        String s = originalText + " ";
+        return s.split(" ")[0];
+    }
 }

@@ -27,4 +27,9 @@ public class Inequality {
         this.comparison = Comparison.valueOf(comparison);
         this.right = new SelectParameter(right);
     }
+
+    @Override
+    public String toString() {
+        return left.toString() + " " + comparison + " " + right.toString();
+    }
 }
