@@ -1,11 +1,12 @@
 package sql.implementation.helpers;
 
 import lombok.Getter;
-import operators.Aggregate;
+import sql.operators.Aggregate;
 
 @Getter
 public class SelectParameter {
 
+    private String originalText;
     private String name;
     private String alias;
     private Aggregate aggregateFunction;
@@ -15,6 +16,7 @@ public class SelectParameter {
     }
 
     private void extractValues(String text){
+        this.originalText = text;
 
         if(text.equals("*")){
             this.name = "*";

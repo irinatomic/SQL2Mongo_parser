@@ -1,7 +1,7 @@
 package sql.implementation;
 
 import lombok.Getter;
-import operators.Logical;
+import sql.operators.Logical;
 import sql.composite.*;
 import sql.implementation.helpers.Inequality;
 

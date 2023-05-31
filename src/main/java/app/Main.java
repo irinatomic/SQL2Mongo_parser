@@ -1,7 +1,6 @@
 package app;
 
 import gui.view.MainFrame;
-import interfaces.*;
 
 public class Main {
 

@@ -1,4 +1,4 @@
-package operators;
+package sql.operators;
 
 public enum Comparison {
 

@@ -74,4 +74,8 @@ public class MainFrame extends JFrame {
         jTable.setModel(AppCore.getInstance().getTableModel());
     }
 
+    public void showErrorMessage(String message){
+        JOptionPane.showMessageDialog(this, message);
+    }
+
 }
