@@ -20,7 +20,7 @@ import java.util.*;
 public class FromClause extends Token {
 
     private String fromTable;                               //table against which we're doing the query
-    List<JoinClause> joins;
+    private List<JoinClause> joins;
 
     public FromClause(Token parent) {
         super(parent);
