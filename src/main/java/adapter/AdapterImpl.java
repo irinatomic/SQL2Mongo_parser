@@ -8,8 +8,6 @@ import org.bson.Document;
 import sql.tokens.Query;
 import java.util.*;
 
-// Mongo aggregation pipeline: https://www.tutorialsteacher.com/mongodb/aggregation
-
 @Getter
 @Setter
 public class AdapterImpl implements Adapter {

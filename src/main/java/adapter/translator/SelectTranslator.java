@@ -27,6 +27,7 @@ public class SelectTranslator extends Translator{
         // Select -> $project
         List<SelectParameter> selectParams = sc.getParameters();
         List<SelectParameter> selectParamsAggr = new ArrayList<>();
+        List<SelectParameter> selectParamsNOAggr = new ArrayList<>();
 
         String projectDoc = "{ $project: {";
         for(SelectParameter sp : selectParams){
@@ -34,11 +35,11 @@ public class SelectTranslator extends Translator{
             if(sp.getAggregateFunction() != null) {
                 selectParamsAggr.add(sp);
                 name = aggrParamNewName(sp);
-            }
-                projectDoc += name + ": 1, ";
+            } else
+                selectParamsNOAggr.add(sp);
+            projectDoc += name + ": 1, ";
         }
-        projectDoc += "_id: 0";
-        projectDoc += "} }";
+        projectDoc += "_id: 0 } }";
 
         // $group contains the parameters from the GROUP BY CLAUSE in _id: {}
         // and contains the select params that are under the aggregate function
@@ -56,6 +57,12 @@ public class SelectTranslator extends Translator{
         for(SelectParameter spa : selectParamsAggr){
             String newName = aggrParamNewName(spa);
             groupAggrDoc += newName + ": { " + spa.getAggregateFunction() + ": '$" + spa.getName() + "' }, ";
+        }
+
+        if(!selectParamsAggr.isEmpty()){
+            for(SelectParameter spna : selectParamsNOAggr){
+                groupAggrDoc += spna.getName() + ": { $first: \"$" + spna.getName() + "\" }, ";
+            }
         }
 
         String groupDoc = "";
