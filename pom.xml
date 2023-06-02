@@ -32,16 +32,19 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
         </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.29</version>
         </dependency>
+
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.12.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.github.jsqlparser</groupId>
             <artifactId>jsqlparser</artifactId>
@@ -49,6 +52,5 @@
         </dependency>
 
     </dependencies>
-
 
 </project>

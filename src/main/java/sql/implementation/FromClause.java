@@ -3,7 +3,7 @@ package sql.implementation;
 import lombok.Getter;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.select.*;
-import sql.composite.Token;
+import sql.architecture.Token;
 import sql.implementation.helpers.JoinClause;
 
 import java.util.*;

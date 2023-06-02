@@ -8,6 +8,7 @@ import sql.implementation.Query;
 public class SQLImplemet implements SQL {
 
     private Query currQuery;
+    private Query currSubquery;
 
     @Override
     public void parseQueryToSQLObject(String query) {
@@ -17,9 +18,9 @@ public class SQLImplemet implements SQL {
 
     @Override
     public Query parseSubqueryToSQLObject(String query){
-        Query q = new Query(null);
+        Query q = new Query(currQuery);
         q.parseQueryToSQLObject(query);
+        this.currSubquery = q;
         return q;
-       // return null;
     }
 }

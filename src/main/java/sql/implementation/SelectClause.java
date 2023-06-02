@@ -2,7 +2,7 @@ package sql.implementation;
 
 import lombok.Getter;
 import sql.implementation.helpers.SelectParameter;
-import sql.composite.Token;
+import sql.architecture.Token;
 import java.util.*;
 
 @Getter

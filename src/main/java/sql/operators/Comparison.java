@@ -6,7 +6,6 @@ public enum Comparison {
     $gt(">"),       $gte(">="),
     $lt("<"),       $lte("<="),
     $in("in"),      $nin("not in"),
-    $between("between"),                    //edge case sa mongo strane
     $regex("like");
 
     private final String op;

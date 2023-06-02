@@ -1,7 +1,7 @@
 package sql.implementation;
 
 import lombok.Getter;
-import sql.composite.Token;
+import sql.architecture.Token;
 import java.util.*;
 
 @Getter

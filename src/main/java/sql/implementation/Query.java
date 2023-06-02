@@ -4,15 +4,20 @@ import lombok.Getter;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
-import sql.composite.*;
+import sql.architecture.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
-public class Query extends TokenComposite {
+public class Query extends Token {
 
     private String text;
+    private List<Token> clauses;
 
     public Query(Token parent) {
         super(parent);
+        clauses = new ArrayList<>();
     }
 
     @Override
@@ -41,42 +46,42 @@ public class Query extends TokenComposite {
                     if(!plainSelect.getSelectItems().isEmpty()){
                         SelectClause sc = new SelectClause(this);
                         sc.parseQueryToSQLObject(plainSelect.getSelectItems().toString());
-                        this.addChild(sc);
+                        clauses.add(sc);
                     }
 
                     // From clause -> whole logic is in FromClause
                     if(plainSelect.getFromItem() != null){
                         FromClause fc = new FromClause(this);
                         fc.parseQueryToSQLObject(query);
-                        this.addChild(fc);
+                        clauses.add(fc);
                     }
 
                     // Where clause
                     if (plainSelect.getWhere() != null) {
                         WhereClause wc = new WhereClause(this);
                         wc.parseQueryToSQLObject(plainSelect.getWhere().toString());
-                        this.addChild(wc);
+                        clauses.add(wc);
                     }
 
                     // Group By clause
                     if (plainSelect.getGroupBy() != null) {
                         GroupByClause gbc = new GroupByClause(this);
                         gbc.parseQueryToSQLObject(plainSelect.getGroupBy().toString());
-                        this.addChild(gbc);
+                        clauses.add(gbc);
                     }
 
                     // Having clause
                     if (plainSelect.getHaving() != null) {
                         HavingClause hc = new HavingClause(this);
                         hc.parseQueryToSQLObject(plainSelect.getHaving().toString());
-                        this.addChild(hc);
+                        clauses.add(hc);
                     }
 
                     // Order By clause
                     if (plainSelect.getOrderByElements() != null) {
                         OrderByClause obc = new OrderByClause(this);
                         obc.parseQueryToSQLObject(plainSelect.getOrderByElements().toString());
-                        this.addChild(obc);
+                        clauses.add(obc);
                     }
 
                 }

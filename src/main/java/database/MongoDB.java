@@ -32,6 +32,7 @@ public class MongoDB {
 
         connectToDatabase();
         MongoDatabase database = connection.getDatabase("bp_tim58");
+        //database.runCommand();
 
 //        MongoCollection<Document> collection = database.getCollection("employees");
 //        FindIterable<Document> results = collection.find(Document.parse("{}"));

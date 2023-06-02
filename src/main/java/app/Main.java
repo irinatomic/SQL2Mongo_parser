@@ -1,6 +1,8 @@
 package app;
 
 import gui.view.MainFrame;
+import interfaces.ApplicationFramework;
+import interfaces.Database;
 
 public class Main {
 
@@ -10,7 +12,7 @@ public class Main {
         mainFrame.setAppCore(appCore);
 
         //TESTING
-//        Database db = ApplicationFramework.getInstance().getDb();
-//        appCore.getTableModel().setRows(db.preformQuery(""));
+        Database db = ApplicationFramework.getInstance().getDb();
+        appCore.getTableModel().setRows(db.preformQuery(""));
     }
 }

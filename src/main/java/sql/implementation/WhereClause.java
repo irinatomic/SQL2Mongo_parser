@@ -2,7 +2,7 @@ package sql.implementation;
 
 import lombok.Getter;
 import sql.implementation.helpers.WhereParameter;
-import sql.composite.*;
+import sql.architecture.*;
 
 import java.util.ArrayList;
 import java.util.List;

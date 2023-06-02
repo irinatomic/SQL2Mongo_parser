@@ -5,7 +5,7 @@ import java.util.List;
 import errors.Error;
 import interfaces.ApplicationFramework;
 import sql.SQLImplemet;
-import sql.composite.Token;
+import sql.architecture.Token;
 import sql.implementation.*;
 import sql.implementation.helpers.JoinClause;
 
@@ -17,7 +17,7 @@ public class Check4 extends Check {
     public boolean checkRule() {
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
-        List<Token> clauses = query.getChildren();
+        List<Token> clauses = query.getClauses();
 
         // Unknown error
         if(clauses.isEmpty())
