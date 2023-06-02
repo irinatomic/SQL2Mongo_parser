@@ -1,20 +1,14 @@
 package adapter;
 
-import adapter.translator.SelectTranslator;
-import adapter.translator.Translator;
+import adapter.translator.*;
 import interfaces.Adapter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
 import sql.tokens.Query;
-
 import java.util.*;
 
-/* Mongo query:
-database.getCollection(""table_name).aggregate(
-       Arrays.asList( List<Documents> )
-   ).iterator();
- */
+// Mongo aggregation pipeline: https://www.tutorialsteacher.com/mongodb/aggregation
 
 @Getter
 @Setter
@@ -32,7 +26,8 @@ public class AdapterImpl implements Adapter {
         this.stages = new ArrayList<>();
 
         SelectTranslator st = new SelectTranslator();
-        translators.add(st);
+        OrderByTranslator obt = new OrderByTranslator();
+        translators.addAll(Arrays.asList(st, obt));
     }
 
     @Override

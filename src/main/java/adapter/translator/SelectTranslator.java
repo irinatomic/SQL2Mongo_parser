@@ -19,13 +19,10 @@ db.employees.aggregate([
 
 public class SelectTranslator extends Translator{
 
-    private SelectClause sc;
-    private GroupByClause gbc;
-
     @Override
     public void translate(Query query) {
-        this.sc = query.getSelectClause();
-        this.gbc = query.getGroupByClause();
+        SelectClause sc = query.getSelectClause();
+        GroupByClause gbc = query.getGroupByClause();
 
         // Select -> $project
         List<SelectParameter> selectParams = sc.getParameters();
