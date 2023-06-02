@@ -5,6 +5,18 @@ import sql.tokens.helpers.SelectParameter;
 
 import java.util.*;
 
+/* SQL: select firt_name, last_name, min(salary) from employees
+db.employees.aggregate([
+    { $group: { _id: {},
+                first_name: { $first: "$first_name" },
+                last_name: { $first: "$last_name" },
+                min_salary: { $min: "$salary" }
+              }
+    },
+    { $project: {first_name: 1, last_name: 1,min_salary: 1, _id: 0} }
+])
+ */
+
 public class SelectTranslator extends Translator{
 
     private SelectClause sc;
@@ -21,31 +33,47 @@ public class SelectTranslator extends Translator{
 
         String projectDoc = "{ $project: {";
         for(SelectParameter sp : selectParams){
-            if(sp.getAggregateFunction() != null)
+            String name = sp.getName();
+            if(sp.getAggregateFunction() != null) {
                 selectParamsAggr.add(sp);
-
-            projectDoc += sp.getName() + ": '$" + sp.getName() + "', ";
+                name = aggrParamNewName(sp);
+            }
+                projectDoc += name + ": 1, ";
         }
+        projectDoc += "_id: 0";
         projectDoc += "} }";
 
         // $group contains the parameters from the GROUP BY CLAUSE in _id: {}
         // and contains the select params that are under the aggregate function
 
-        String groupIdDoc = "{ $group: { _id: {";
-        for(String param : gbc.getParameters()){
-            String paramMongo = param + ": '$" + param + "', ";
-            groupIdDoc += paramMongo;
+        String groupIdDoc = " _id: {";
+        if(gbc != null){
+            for(String param : gbc.getParameters()){
+                String paramMongo = param + ": '$" + param + "', ";
+                groupIdDoc += paramMongo;
+            }
         }
         groupIdDoc += "}, ";
 
+        String groupAggrDoc = "";
         for(SelectParameter spa : selectParamsAggr){
-            String newName = spa.getAlias().replace("$", "") + spa.getName();
-            groupIdDoc += newName + ": { " + spa.getAggregateFunction() + ": '$" + spa.getName() + "' }, ";
+            String newName = aggrParamNewName(spa);
+            groupAggrDoc += newName + ": { " + spa.getAggregateFunction() + ": '$" + spa.getName() + "' }, ";
         }
-        groupIdDoc += "} }";
 
+        String groupDoc = "";
+        if(gbc != null || !groupAggrDoc.equals("")){
+            groupDoc += "{ $group: {";
+            groupDoc += groupIdDoc;
+            groupDoc += groupAggrDoc;
+            groupDoc += "} }";
+        }
 
         System.out.println(projectDoc);
-        System.out.println(groupIdDoc);
+        System.out.println(groupDoc);
+    }
+
+    private String aggrParamNewName(SelectParameter sp){
+        return sp.getAggregateFunction().toString().replace("$", "") + sp.getName();
     }
 }
