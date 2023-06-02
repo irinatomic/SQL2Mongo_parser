@@ -1,22 +1,19 @@
-package sql.implementation;
+package sql.tokens;
 
 import lombok.Getter;
-import sql.implementation.helpers.SelectParameter;
-import sql.architecture.Token;
+import sql.tokens.helpers.SelectParameter;
 import java.util.*;
 
 @Getter
-public class SelectClause extends Token {
+public class SelectClause {
 
     private String originalText;
     private List<SelectParameter> parameters;
 
-    public SelectClause(Token parent) {
-        super(parent);
+    public SelectClause() {
         this.parameters = new ArrayList<>();
     }
 
-    @Override
     public void parseQueryToSQLObject(String query) {
         this.originalText = query;
         query = query.replace("[", "").replace("]", "");

@@ -2,7 +2,7 @@ package sql;
 
 import interfaces.SQL;
 import lombok.Getter;
-import sql.implementation.Query;
+import sql.tokens.Query;
 
 @Getter
 public class SQLImplemet implements SQL {
@@ -12,13 +12,13 @@ public class SQLImplemet implements SQL {
 
     @Override
     public void parseQueryToSQLObject(String query) {
-        this.currQuery = new Query(null);
+        this.currQuery = new Query();
         currQuery.parseQueryToSQLObject(query);
     }
 
     @Override
     public Query parseSubqueryToSQLObject(String query){
-        Query q = new Query(currQuery);
+        Query q = new Query();
         q.parseQueryToSQLObject(query);
         this.currSubquery = q;
         return q;

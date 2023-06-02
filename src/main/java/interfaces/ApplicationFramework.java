@@ -11,6 +11,7 @@ public class ApplicationFramework {
     protected Database db;
     protected SQL sql;
     protected Validator validator;
+    protected Adapter adapter;
     protected ErrorGenerator errorGenerator;
     private static ApplicationFramework instance;
 
@@ -27,11 +28,12 @@ public class ApplicationFramework {
         this.gui.start();
     }
 
-    public void initialise(Gui gui, Database db, SQL sql, Validator validator, ErrorGenerator eg){
+    public void initialise(Gui gui, Database db, SQL sql, Validator validator, Adapter adapter, ErrorGenerator eg){
         this.gui = gui;
         this.db = db;
         this.sql = sql;
         this.validator = validator;
+        this.adapter = adapter;
         this.errorGenerator = eg;
         //bice i za MessageGenerator
     }

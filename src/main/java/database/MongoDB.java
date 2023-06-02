@@ -31,7 +31,7 @@ public class MongoDB {
     public List<Row> runQuery(String query) {
 
         connectToDatabase();
-        MongoDatabase database = connection.getDatabase("bp_tim58");
+        MongoDatabase database = connection.getDatabase(Constants.MYSQL_DB);
         //database.runCommand();
 
 //        MongoCollection<Document> collection = database.getCollection("employees");

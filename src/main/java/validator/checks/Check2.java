@@ -5,9 +5,8 @@ import java.util.*;
 import errors.Error;
 import interfaces.ApplicationFramework;
 import sql.SQLImplemet;
-import sql.architecture.Token;
-import sql.implementation.*;
-import sql.implementation.helpers.SelectParameter;
+import sql.tokens.*;
+import sql.tokens.helpers.SelectParameter;
 
 public class Check2 extends Check {
 
@@ -17,21 +16,9 @@ public class Check2 extends Check {
     public boolean checkRule() {
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
-        List<Token> clauses = query.getClauses();
 
-        // Unknown error
-        if(clauses.isEmpty())
-            ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.UNKNOWN);
-
-        List<String> mustHave = new ArrayList<>();
-        String groupByText = "";
-
-        for(Token t : clauses){
-            if (t instanceof SelectClause)
-                mustHave = getParametersWithoutAggregate((SelectClause) t);
-            if(t instanceof GroupByClause)
-                groupByText = ((GroupByClause) t).getOriginalText();
-        }
+        List<String> mustHave = getParametersWithoutAggregate(query.getSelectClause());
+        String groupByText = query.getGroupByClause().getOriginalText();
 
         groupByText = groupByText.toLowerCase();
         for(String s : mustHave){

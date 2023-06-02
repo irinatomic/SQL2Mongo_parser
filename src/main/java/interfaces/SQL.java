@@ -1,9 +1,9 @@
 package interfaces;
 
-import sql.implementation.Query;
+import sql.tokens.Query;
 
 public interface SQL {
 
     void parseQueryToSQLObject(String query);
-    public Query parseSubqueryToSQLObject(String query);
+    Query parseSubqueryToSQLObject(String query);
 }

@@ -5,9 +5,8 @@ import java.util.*;
 import errors.Error;
 import interfaces.ApplicationFramework;
 import sql.SQLImplemet;
-import sql.architecture.Token;
-import sql.implementation.*;
-import sql.implementation.helpers.SelectParameter;
+import sql.tokens.*;
+import sql.tokens.helpers.SelectParameter;
 
 public class Check3 extends Check {
 
@@ -17,24 +16,10 @@ public class Check3 extends Check {
     public boolean checkRule() {
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
-        List<Token> clauses = query.getClauses();
 
-        // Unknown error
-        if(clauses.isEmpty())
-            ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.UNKNOWN);
-
-        List<String> mustHave = new ArrayList<>();
-        String whereClauseText = "";
-        String havingClauseText = "";
-
-        for(Token t : clauses){
-            if (t instanceof SelectClause)
-                mustHave = getParametersWithAggregate((SelectClause) t);
-            if(t instanceof WhereClause)
-                whereClauseText = ((WhereClause) t).getOriginalText();
-            if(t instanceof HavingClause)
-                havingClauseText = ((HavingClause) t).getOriginalText();
-        }
+        List<String> mustHave =getParametersWithAggregate(query.getSelectClause());
+        String whereClauseText = query.getWhereClause().getOriginalText();
+        String havingClauseText = query.getHavingClause().getOriginalText();
 
         whereClauseText = whereClauseText.toLowerCase();
         havingClauseText = havingClauseText.toLowerCase();

@@ -1,10 +1,9 @@
-package sql.implementation;
+package sql.tokens;
 
 import lombok.Getter;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.select.*;
-import sql.architecture.Token;
-import sql.implementation.helpers.JoinClause;
+import sql.tokens.helpers.JoinClause;
 
 import java.util.*;
 
@@ -17,17 +16,15 @@ import java.util.*;
 * */
 
 @Getter
-public class FromClause extends Token {
+public class FromClause {
 
     private String fromTable;                               //table against which we're doing the query
     private List<JoinClause> joins;
 
-    public FromClause(Token parent) {
-        super(parent);
+    public FromClause() {
         this.joins = new ArrayList<>();
     }
 
-    @Override
     public void parseQueryToSQLObject(String query) {
         query = query.toLowerCase();
 

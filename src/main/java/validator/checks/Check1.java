@@ -3,10 +3,7 @@ package validator.checks;
 import errors.Error;
 import interfaces.ApplicationFramework;
 import sql.SQLImplemet;
-import sql.architecture.Token;
-import sql.implementation.*;
-
-import java.util.List;
+import sql.tokens.*;
 
 public class Check1 extends Check {
 
@@ -16,17 +13,14 @@ public class Check1 extends Check {
     public boolean checkRule(){
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
-        List<Token> clauses = query.getClauses();
 
         boolean hasSelect = false;
         boolean hasFrom = false;
 
-        for(Token t : clauses){
-            if(t instanceof SelectClause)
-                hasSelect = true;
-            if(t instanceof FromClause)
-                hasFrom = true;
-        }
+        if(query.getSelectClause() != null)
+            hasSelect = true;
+        if(query.getFromClause() != null)
+            hasFrom = true;
 
         // proveri da li je ispunjen uslov
         if(!hasSelect || !hasFrom)

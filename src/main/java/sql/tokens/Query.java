@@ -1,26 +1,21 @@
-package sql.implementation;
+package sql.tokens;
 
 import lombok.Getter;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
-import sql.architecture.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
-public class Query extends Token {
+public class Query {
 
     private String text;
-    private List<Token> clauses;
+    private SelectClause selectClause;
+    private FromClause fromClause;
+    private WhereClause whereClause;
+    private HavingClause havingClause;
+    private GroupByClause groupByClause;
+    private OrderByClause orderByClause;
 
-    public Query(Token parent) {
-        super(parent);
-        clauses = new ArrayList<>();
-    }
-
-    @Override
     public void parseQueryToSQLObject(String query) {
         this.text = query;
 
@@ -44,44 +39,38 @@ public class Query extends Token {
 
                     // Select clause
                     if(!plainSelect.getSelectItems().isEmpty()){
-                        SelectClause sc = new SelectClause(this);
-                        sc.parseQueryToSQLObject(plainSelect.getSelectItems().toString());
-                        clauses.add(sc);
+                        this.selectClause = new SelectClause();
+                        this.selectClause.parseQueryToSQLObject(plainSelect.getSelectItems().toString());
                     }
 
                     // From clause -> whole logic is in FromClause
                     if(plainSelect.getFromItem() != null){
-                        FromClause fc = new FromClause(this);
-                        fc.parseQueryToSQLObject(query);
-                        clauses.add(fc);
+                        this.fromClause = new FromClause();
+                        this.fromClause.parseQueryToSQLObject(query);
                     }
 
                     // Where clause
                     if (plainSelect.getWhere() != null) {
-                        WhereClause wc = new WhereClause(this);
-                        wc.parseQueryToSQLObject(plainSelect.getWhere().toString());
-                        clauses.add(wc);
+                        this.whereClause = new WhereClause();
+                        this.whereClause.parseQueryToSQLObject(plainSelect.getWhere().toString());
                     }
 
                     // Group By clause
                     if (plainSelect.getGroupBy() != null) {
-                        GroupByClause gbc = new GroupByClause(this);
-                        gbc.parseQueryToSQLObject(plainSelect.getGroupBy().toString());
-                        clauses.add(gbc);
+                        this.groupByClause = new GroupByClause();
+                        this.groupByClause.parseQueryToSQLObject(plainSelect.getGroupBy().toString());
                     }
 
                     // Having clause
                     if (plainSelect.getHaving() != null) {
-                        HavingClause hc = new HavingClause(this);
-                        hc.parseQueryToSQLObject(plainSelect.getHaving().toString());
-                        clauses.add(hc);
+                        this.havingClause = new HavingClause();
+                        this.havingClause.parseQueryToSQLObject(plainSelect.getHaving().toString());
                     }
 
                     // Order By clause
                     if (plainSelect.getOrderByElements() != null) {
-                        OrderByClause obc = new OrderByClause(this);
-                        obc.parseQueryToSQLObject(plainSelect.getOrderByElements().toString());
-                        clauses.add(obc);
+                        this.orderByClause = new OrderByClause();
+                        this.orderByClause.parseQueryToSQLObject(plainSelect.getOrderByElements().toString());
                     }
 
                 }

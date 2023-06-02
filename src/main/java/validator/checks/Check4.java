@@ -5,9 +5,8 @@ import java.util.List;
 import errors.Error;
 import interfaces.ApplicationFramework;
 import sql.SQLImplemet;
-import sql.architecture.Token;
-import sql.implementation.*;
-import sql.implementation.helpers.JoinClause;
+import sql.tokens.*;
+import sql.tokens.helpers.JoinClause;
 
 public class Check4 extends Check {
 
@@ -17,20 +16,9 @@ public class Check4 extends Check {
     public boolean checkRule() {
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
-        List<Token> clauses = query.getClauses();
-
-        // Unknown error
-        if(clauses.isEmpty())
-            ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.UNKNOWN);
 
         // Will not be null because it passed the Check1
-        FromClause fromClause = null;
-        for(Token t : clauses){
-            if(t instanceof FromClause){
-                fromClause = (FromClause) t;
-                break;
-            }
-        }
+        FromClause fromClause = query.getFromClause();
 
         List<JoinClause> joins = fromClause.getJoins();
         if(joins == null || joins.isEmpty())

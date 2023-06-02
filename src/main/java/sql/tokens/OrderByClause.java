@@ -1,21 +1,18 @@
-package sql.implementation;
+package sql.tokens;
 
 import lombok.Getter;
-import sql.architecture.Token;
 import java.util.*;
 
 @Getter
-public class OrderByClause extends Token {
+public class OrderByClause{
 
     //int: 1 (ASC) or -1 (DESC)
     private Map<String, Integer> parameters;
 
-    public OrderByClause(Token parent) {
-        super(parent);
+    public OrderByClause() {
         this.parameters = new LinkedHashMap<>();       //linked - so the param. keep the order thay are added in
     }
 
-    @Override
     public void parseQueryToSQLObject(String query) {
         query = query.replace("[", "").replace("]", "");
         query += ",";

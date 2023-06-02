@@ -1,4 +1,4 @@
-package sql.implementation.helpers;
+package sql.tokens.helpers;
 
 import lombok.Getter;
 

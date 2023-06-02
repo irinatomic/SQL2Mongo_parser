@@ -1,12 +1,11 @@
-package sql.implementation;
+package sql.tokens;
 
 import lombok.Getter;
-import sql.architecture.Token;
-import sql.implementation.helpers.HavingParameter;
+import sql.tokens.helpers.HavingParameter;
 import java.util.*;
 
 @Getter
-public class HavingClause extends Token {
+public class HavingClause {
 
     /* A and B or C -> list of HavingParams
     * params[0]: A and  (A = "sum(nesto) as N" which is a SelectParameter
@@ -19,12 +18,10 @@ public class HavingClause extends Token {
     private String originalText;
     private List<HavingParameter> params;
 
-    public HavingClause(Token parent) {
-        super(parent);
+    public HavingClause() {
         this.params = new ArrayList<>();
     }
 
-    @Override
     public void parseQueryToSQLObject(String query) {
         this.originalText = query;
 

@@ -1,14 +1,13 @@
-package sql.implementation;
+package sql.tokens;
 
 import lombok.Getter;
-import sql.implementation.helpers.WhereParameter;
-import sql.architecture.*;
+import sql.tokens.helpers.WhereParameter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class WhereClause extends Token {
+public class WhereClause {
 
     // A > B and C >= D and E in (subquery)
     // Logical same to HavingClause: left is an Inequality and right can be another subpart of the Where clause
@@ -17,12 +16,10 @@ public class WhereClause extends Token {
     private String originalText;
     private List<WhereParameter> params;
 
-    public WhereClause(Token parent) {
-        super(parent);
+    public WhereClause() {
         this.params = new ArrayList<>();
     }
 
-    @Override
     public void parseQueryToSQLObject(String query) {
         this.originalText = query;
 
