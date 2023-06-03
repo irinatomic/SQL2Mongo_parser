@@ -5,7 +5,7 @@ import sql.tokens.Query;
 
 import java.util.Map;
 
-public class OrderByTranslator extends Translator{
+public class SortTranslator extends Translator{
 
     @Override
     public void translate(Query query) {

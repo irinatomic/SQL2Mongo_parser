@@ -23,8 +23,8 @@ public class AdapterImpl implements Adapter {
         this.translators = new ArrayList<>();
         this.stages = new ArrayList<>();
 
-        SelectTranslator st = new SelectTranslator();
-        OrderByTranslator obt = new OrderByTranslator();
+        GroupTranslator st = new GroupTranslator();
+        SortTranslator obt = new SortTranslator();
         translators.addAll(Arrays.asList(st, obt));
     }
 

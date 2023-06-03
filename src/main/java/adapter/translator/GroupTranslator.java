@@ -17,7 +17,7 @@ db.employees.aggregate([
 ])
  */
 
-public class SelectTranslator extends Translator{
+public class GroupTranslator extends Translator{
 
     @Override
     public void translate(Query query) {
@@ -29,17 +29,12 @@ public class SelectTranslator extends Translator{
         List<SelectParameter> selectParamsAggr = new ArrayList<>();
         List<SelectParameter> selectParamsNOAggr = new ArrayList<>();
 
-        String projectDoc = "{ $project: {";
         for(SelectParameter sp : selectParams){
-            String name = sp.getName();
-            if(sp.getAggregateFunction() != null) {
+            if(sp.getAggregateFunction() != null)
                 selectParamsAggr.add(sp);
-                name = aggrParamNewName(sp);
-            } else
+            else
                 selectParamsNOAggr.add(sp);
-            projectDoc += name + ": 1, ";
         }
-        projectDoc += "_id: 0 } }";
 
         // $group contains the parameters from the GROUP BY CLAUSE in _id: {}
         // and contains the select params that are under the aggregate function
@@ -73,7 +68,6 @@ public class SelectTranslator extends Translator{
             groupDoc += "} }";
         }
 
-        System.out.println(projectDoc);
         System.out.println(groupDoc);
     }
 
