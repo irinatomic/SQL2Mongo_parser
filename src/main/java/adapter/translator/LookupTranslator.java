@@ -50,11 +50,14 @@ public class LookupTranslator extends Translator{
         String mainTable = fc.getFromTable();
         ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).setMainCollecition(mainTable);
 
+        // Either we do the joins
         if(!fc.getJoins().isEmpty()){
             lookupForJoin(fc);
             return;
         }
 
+        // Or either we do the subquery
+        // ...
 
     }
 

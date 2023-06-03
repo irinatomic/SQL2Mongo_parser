@@ -25,4 +25,12 @@ public class SelectClause {
             this.parameters.add(sp);
         }
     }
+
+    public boolean hasAnAggregateParameter(){
+        for(SelectParameter sp : this.parameters){
+            if(sp.getAggregateFunction() != null)
+                return true;
+        }
+        return false;
+    }
 }

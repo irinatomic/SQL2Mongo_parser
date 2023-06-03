@@ -19,15 +19,7 @@ public class Check2 extends Check {
         Query query = sqlImplemet.getCurrQuery();
 
         // First : check if there is an aggregate function in select clause
-        boolean  hasAggregate = false;
-        for(SelectParameter sp : query.getSelectClause().getParameters()){
-            if(sp.getAggregateFunction() != null){
-                hasAggregate = true;
-                break;
-            }
-        }
-
-        if(!hasAggregate)
+        if(!query.getSelectClause().hasAnAggregateParameter())
             return true;
 
         List<String> mustHave = getParametersWithoutAggregate(query.getSelectClause());

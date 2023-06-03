@@ -9,14 +9,13 @@ public class RegexConverter {
     // So we will just preform our Mongo queries case insensitive
 
     public static String convertSQLtoMongoRegex(String sql){
-        System.out.println("SQL: " + sql);
         sql = sql.replaceAll("\'", "");
         int sqlLen = sql.length();
         String mongo = "/";
 
         //If it doesn't have any special characters -> match the whole string
         if(!sql.contains("_") && !sql.contains("%")){
-            mongo += "^" + sql + "$/i/";
+            mongo += "^" + sql + "$/i";
             //System.out.println("MONGO: " + mongo);
             return mongo;
         }
@@ -33,7 +32,7 @@ public class RegexConverter {
 
         //Only 'begins with' something
         if(beginningChars.length() == sqlLen-1 && sql.charAt(sqlLen-1) == '%'){
-            mongo += '^' + beginningChars + "/i/";
+            mongo += '^' + beginningChars + "/i";
             //System.out.println("MONGO: " + mongo);
             return mongo;
         }
@@ -50,7 +49,7 @@ public class RegexConverter {
 
         // Only 'ends with' something
         if(endingChars.length() == sqlLen-1 && sql.charAt(0) == '%'){
-            mongo += endingChars + "$/i/";
+            mongo += endingChars + "$/i";
             //System.out.println("MONGO: " + mongo);
             return mongo;
         }
@@ -76,7 +75,7 @@ public class RegexConverter {
         if(Character.isLetter(last))
             mongo += "$";
 
-        mongo += "/i/";
+        mongo += "/i";
         //System.out.println("MONGO: " + mongo);
         return mongo;
     }

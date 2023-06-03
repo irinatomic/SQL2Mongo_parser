@@ -20,11 +20,12 @@ public class AdapterImpl implements Adapter {
         this.translators = new ArrayList<>();
         this.stages = new ArrayList<>();
 
-       LookupTranslator lookup = new LookupTranslator();
+        LookupTranslator lookup = new LookupTranslator();
+        MatchTranslator match = new MatchTranslator();
         GroupTranslator group = new GroupTranslator();
         SortTranslator sort = new SortTranslator();
         ProjectTranslator project = new ProjectTranslator();
-        translators.addAll(Arrays.asList(lookup, group, sort, project));
+        translators.addAll(Arrays.asList(lookup, match, group, sort, project));
     }
 
     @Override

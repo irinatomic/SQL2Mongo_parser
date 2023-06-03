@@ -1,7 +1,9 @@
 package sql.tokens.helpers;
 
+import lombok.Getter;
 import sql.operators.Logical;
 
+@Getter
 public class WhereParameter {
 
     private WhereInequality left;
