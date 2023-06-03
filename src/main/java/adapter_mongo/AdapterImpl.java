@@ -15,10 +15,12 @@ public class AdapterImpl implements Adapter {
     private String collectionName;                              //table name
     private List<Translator> translators;
     private List<Document> docs;
+    private Map<String, String> tablesInLookups;
 
     public AdapterImpl(){
         this.translators = new ArrayList<>();
         this.docs = new ArrayList<>();
+        this.tablesInLookups = new HashMap<>();
 
         LookupTranslator lookup = new LookupTranslator();
         MatchTranslator match = new MatchTranslator();

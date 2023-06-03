@@ -7,6 +7,7 @@ import sql.operators.Aggregate;
 public class SelectParameter {
 
     private String originalText;
+    private String table;
     private String name;
     private String alias;
     private Aggregate aggregateFunction;
@@ -20,20 +21,29 @@ public class SelectParameter {
 
         if(text.equals("*")){
             this.name = "*";
+            this.table = null;
             this.alias = null;
             this.aggregateFunction = null;
             return;
         }
 
+        String fullName;
         if(text.contains("(")){
             String af = text.substring(0, text.indexOf("(")).trim();
             this.aggregateFunction = Aggregate.getElement(af);
-            this.name = text.substring(text.indexOf("(")+1, text.indexOf(")"));
+            fullName = text.substring(text.indexOf("(")+1, text.indexOf(")"));
         } else {
             this.aggregateFunction = null;
             text += " ";
-            this.name = text.substring(0, text.indexOf(" "));
+            fullName = text.substring(0, text.indexOf(" "));
         }
+
+        if(fullName.contains(".")){
+            int dotIndex = fullName.indexOf(".");
+            this.table = fullName.substring(0, dotIndex);
+            this.name = fullName.substring(dotIndex+1);
+        } else
+            this.name = fullName;
 
         if(text.contains("as"))
             this.alias = text.substring(text.indexOf("as") + 2).trim();

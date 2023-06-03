@@ -37,10 +37,14 @@ public class MongoDB {
         MongoDatabase database = connection.getDatabase(Constants.MYSQL_DB);
         MongoCollection<Document> collection = database.getCollection(collectionName);
 
+        System.out.println(collectionName);
+
         List<Document> forQuery = adapter.getDocs();
+        for(Document d : forQuery){
+            System.out.println(d.toString());
+        }
         AggregateIterable<Document> result = collection.aggregate(forQuery);
         MongoCursor<Document> cursor = result.iterator();
-        System.out.println("RESULT " + result);
 
         // pack every document into a row
         List<Row> rows = new ArrayList<>();
@@ -52,7 +56,7 @@ public class MongoDB {
                 String name = entry.getKey();
                 Object value = entry.getValue();
                 row.addField(name, value);
-                System.out.println("NAME " + name + " VALUE " + value);
+                //System.out.println("NAME " + name + " VALUE " + value);
             }
             rows.add(row);
         }

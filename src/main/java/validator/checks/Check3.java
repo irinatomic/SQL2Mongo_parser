@@ -22,11 +22,11 @@ public class Check3 extends Check {
     }
 
     private boolean checkQuery(Query query){
-        if(query == null) return true;
+        if(query == null || query.getWhereClause() == null)
+            return true;
 
         List<String> mustNotHave = getParametersWithAggregate(query.getSelectClause());
         String whereClauseText = query.getWhereClause().getOriginalText();
-
         whereClauseText = whereClauseText.toLowerCase();
 
         for(String s : mustNotHave){

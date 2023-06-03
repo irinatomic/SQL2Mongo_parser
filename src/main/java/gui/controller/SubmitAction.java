@@ -25,7 +25,7 @@ public class SubmitAction extends AbstractButtonAction{
         ApplicationFramework.getInstance().getSql().parseQueryToSQLObject(text);
 
         //Validate
-        //ApplicationFramework.getInstance().getValidator().validateQuery();
+        ApplicationFramework.getInstance().getValidator().validateQuery();
 
         //Adapt query for Mongo
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();

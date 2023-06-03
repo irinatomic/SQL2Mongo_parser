@@ -74,12 +74,16 @@ public class LookupTranslator extends Translator{
                                     "foreignField: \"" + j.getFieldTable2() + "\",\n" +
                                     "as: \"" + result + "\"\n"+
                                "}\n" +
-                            "},\n" +
-                            "{ $unwind: \"$" + result + "\" }  ";
+                            "},";
 
-            Document doc = Document.parse($lookup);
-            ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
-            //System.out.println(lookup);
+            Document lookupDoc = Document.parse($lookup);
+            Document unwindDoc = Document.parse("{ $unwind: \"$" + result + "\" }, ");
+            AdapterImpl adapter = (AdapterImpl)ApplicationFramework.getInstance().getAdapter();
+            adapter.getDocs().add(lookupDoc);
+            adapter.getDocs().add(unwindDoc);
+            adapter.getTablesInLookups().putIfAbsent(j.getTable2(), result);
+
+            System.out.println($lookup);
         }
     }
 }

@@ -12,8 +12,10 @@ import sql.tokens.Query;
 
 /* Test cases:
  * select first_name, last_name, min(salary) order by first_name, last_name DESC
- * select first_name, last_name from employees join departments using (department_id)
- *        where salary > 50 order by first_name
+ * select first_name, last_name from employees join departments using (department_id) where salary > 50 order by first_name
+ * select last_name, first_name, department.department_name from employees join departments using (department_id)
+ * select last_name, first_name, departments.department_name, locations.city
+       from hr.employees join departments using (department_id) join locations using (location_id)
  */
 
 public abstract class Translator {
