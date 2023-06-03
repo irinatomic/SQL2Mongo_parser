@@ -1,5 +1,6 @@
 package adapter.translator;
 
+import adapter.AdapterImpl;
 import interfaces.ApplicationFramework;
 import sql.SQLImplemet;
 import sql.tokens.Query;
@@ -27,10 +28,13 @@ public class MatchTranslator extends Translator{
             return;
 
         WhereClause wc = query.getWhereClause();
+        if(wc == null)
+            return;
 
         String match = "{ $match: ";
         match += turnWhereParameterToMongo(wc, wc.getParams().get(0), 0);
         match += " }";
+        ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getStages().add(match);
         System.out.println(match);
     }
 

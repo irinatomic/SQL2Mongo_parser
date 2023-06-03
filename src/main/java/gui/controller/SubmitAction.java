@@ -1,7 +1,9 @@
 package gui.controller;
 
+import app.AppCore;
 import gui.view.MainFrame;
 import interfaces.ApplicationFramework;
+import interfaces.Database;
 import sql.SQLImplemet;
 import sql.tokens.Query;
 
@@ -29,5 +31,9 @@ public class SubmitAction extends AbstractButtonAction{
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
         ApplicationFramework.getInstance().getAdapter().adaptQueryForMongo(query);
+
+        //Query the mongo db
+        Database db = ApplicationFramework.getInstance().getDb();
+        //AppCore.getInstance().getTableModel().setRows(db.preformQuery());
     }
 }

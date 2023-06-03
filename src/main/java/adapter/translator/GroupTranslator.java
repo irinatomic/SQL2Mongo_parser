@@ -1,5 +1,7 @@
 package adapter.translator;
 
+import adapter.AdapterImpl;
+import interfaces.ApplicationFramework;
 import sql.tokens.*;
 import sql.tokens.helpers.SelectParameter;
 
@@ -68,6 +70,7 @@ public class GroupTranslator extends Translator{
             groupDoc += "} }";
         }
 
+        ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getStages().add(groupDoc);
         System.out.println(groupDoc);
     }
 

@@ -48,7 +48,7 @@ public class LookupTranslator extends Translator{
 
         //set the main collection (table we're querying)
         String mainTable = fc.getFromTable();
-        ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).setMainCollecition(mainTable);
+        ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).setCollectionName(mainTable);
 
         // Either we do the joins
         if(!fc.getJoins().isEmpty()){
@@ -76,6 +76,7 @@ public class LookupTranslator extends Translator{
                             "},\n" +
                             "{ $unwind: \"" + result + "\" }  ";
 
+            ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getStages().add(lookup);
             System.out.println(lookup);
         }
     }

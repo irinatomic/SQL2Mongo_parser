@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface Database {
 
-    List<Row> preformQuery(String query);
+    List<Row> preformQuery();
 }

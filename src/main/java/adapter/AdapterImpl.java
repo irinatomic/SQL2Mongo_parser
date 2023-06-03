@@ -14,7 +14,6 @@ public class AdapterImpl implements Adapter {
     private String collectionName;                              //table name
     private List<Translator> translators;
     private List<String> stages;
-    private String mainCollecition;
 
     public AdapterImpl(){
         this.translators = new ArrayList<>();

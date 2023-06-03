@@ -1,17 +1,24 @@
 package database;
 
+import adapter.AdapterImpl;
 import com.mongodb.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
 import database.data.Row;
+import interfaces.ApplicationFramework;
 import org.bson.Document;
 import database.utils.Constants;
 import java.util.*;
 
-/*
-select * from employees =
-- db.employees.find({})
-- db.employees.aggregate().match({})
+
+/* IDEA
+String pipeline = "[ " +
+                "{ $group: { _id: { department_id: '$department_id', job_id: '$job_id' }, minSalary: { $min: '$salary' }, first_name: { $first: '$first_name' } } }, " +
+                "{ $project: { department_id: '$_id.department_id', job_id: '$_id.job_id', minSalary: 1, first_name: 1, _id: 0 } }, " +
+                "{ $sort: { ana: 1 } } " +
+                "]";
+    List<Document> pipelineDocuments = Document.parse(pipeline);
+    AggregateIterable<Document> result = collection.aggregate(pipelineDocuments);
  */
 
 public class MongoDB {
@@ -28,47 +35,53 @@ public class MongoDB {
     }
 
     //TODO: argument query will probably be changed into a 'MongoCursor<Document> cursor' which will be created by the Adapter
-    public List<Row> runQuery(String query) {
+    public List<Row> runQuery() {
+
+        // Documents are in the AdapterImpl
+        AdapterImpl adapter = (AdapterImpl) ApplicationFramework.getInstance().getAdapter();
+        String collectionName = adapter.getCollectionName();
+        System.out.println("Collection: " + collectionName);
 
         connectToDatabase();
         MongoDatabase database = connection.getDatabase(Constants.MYSQL_DB);
-        //database.runCommand();
+        MongoCollection < Document > collection = database.getCollection(collectionName);
 
-//        MongoCollection<Document> collection = database.getCollection("employees");
-//        FindIterable<Document> results = collection.find(Document.parse("{}"));
-//
-//        for (Document document : results) {
-//            try{
-//                System.out.println(document.toJson());
-//            } catch (Exception e){
-//                terminateConnection();
-//            }
-//        }
+        String pipeline = "[ ";
+        for(String stage : adapter.getStages())
+            pipeline += stage + ", ";
+        pipeline += " ]";
+
+        System.out.println("PIPELINE: \n" + pipeline);
+
+//        List<Document> pipelineDocuments = (List<Document>) Document.parse(pipeline);
+//        AggregateIterable<Document> result = collection.aggregate(pipelineDocuments);
+
 
         // send query to db
-        MongoCursor<Document> cursor = database.getCollection("employees").aggregate(
-                Arrays.asList(
-                        Document.parse("{\n" + "$match: {} \n" + "}")
-                )
-        ).iterator();
+//        MongoCursor<Document> cursor = database.getCollection("employees").aggregate(
+//                Arrays.asList(
+//                        Document.parse("{\n" + "$match: {} \n" + "}")
+//                )
+//        ).iterator();
 
         // pack every document into a row
-        List<Row> rows = new ArrayList<>();
-        while (cursor.hasNext()){
-            Row row = new Row();
-            row.setName("employees");
-            Document d = cursor.next();
-            for (Map.Entry<String, Object> entry : d.entrySet()) {
-                String name = entry.getKey();
-                Object value = entry.getValue();
-                row.addField(name, value);
-                //System.out.println("Name: " + name + ", Value: " + value);
-            }
-            rows.add(row);
-        }
+//        List<Row> rows = new ArrayList<>();
+//        while (cursor.hasNext()){
+//            Row row = new Row();
+//            row.setName(collection);
+//            Document d = cursor.next();
+//            for (Map.Entry<String, Object> entry : d.entrySet()) {
+//                String name = entry.getKey();
+//                Object value = entry.getValue();
+//                row.addField(name, value);
+//                //System.out.println("Name: " + name + ", Value: " + value);
+//            }
+//            rows.add(row);
+//        }
 
         terminateConnection();
-        return rows;
+        return null;
+        //return rows;
     }
 
     private void connectToDatabase() {
