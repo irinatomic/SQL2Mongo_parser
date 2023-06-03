@@ -4,8 +4,7 @@ import database.data.Row;
 import gui.view.MainFrame;
 
 import javax.swing.table.DefaultTableModel;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 public class TableModel extends DefaultTableModel {
 

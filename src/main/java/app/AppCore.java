@@ -1,6 +1,6 @@
 package app;
 
-import adapter.AdapterImpl;
+import adapter_mongo.AdapterImpl;
 import database.DBController;
 import errors.ErrorGeneratorImpl;
 import gui.SwingGui;

@@ -1,9 +1,9 @@
-package adapter.translator;
+package adapter_mongo.translator;
 
-import adapter.AdapterImpl;
+import adapter_mongo.AdapterImpl;
 import interfaces.ApplicationFramework;
-import sql.tokens.Query;
-import sql.tokens.SelectClause;
+import org.bson.Document;
+import sql.tokens.*;
 import sql.tokens.helpers.SelectParameter;
 
 import java.util.List;
@@ -15,16 +15,17 @@ public class ProjectTranslator extends Translator{
         SelectClause sc = query.getSelectClause();
         List<SelectParameter> selectParams = sc.getParameters();
 
-        String projectDoc = "{ $project: {";
+        String $project = "{ $project: {";
         for(SelectParameter sp : selectParams){
             String name = sp.getName();
             if(sp.getAggregateFunction() != null)
                 name = aggrParamNewName(sp);
-            projectDoc += name + ": 1, ";
+            $project += name + ": 1, ";
         }
-        projectDoc += "_id: 0 } }";
+        $project += "_id: 0 } }";
 
-        ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getStages().add(projectDoc);
+        Document doc = Document.parse($project);
+        ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
         //System.out.println(projectDoc);
     }
     private String aggrParamNewName(SelectParameter sp){

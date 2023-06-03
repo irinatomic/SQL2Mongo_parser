@@ -1,7 +1,8 @@
-package adapter.translator;
+package adapter_mongo.translator;
 
-import adapter.AdapterImpl;
+import adapter_mongo.AdapterImpl;
 import interfaces.ApplicationFramework;
+import org.bson.Document;
 import sql.tokens.*;
 import sql.tokens.helpers.SelectParameter;
 
@@ -62,15 +63,17 @@ public class GroupTranslator extends Translator{
             }
         }
 
-        String groupDoc = "";
+        String $group = "";
         if(gbc != null || !groupAggrDoc.equals("")){
-            groupDoc += "{ $group: {";
-            groupDoc += groupIdDoc;
-            groupDoc += groupAggrDoc;
-            groupDoc += "} }";
+            $group += "{ $group: {";
+            $group += groupIdDoc;
+            $group += groupAggrDoc;
+            $group += "} }";
         }
 
-        ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getStages().add(groupDoc);
+        if($group.equals(""))  return;
+        Document doc = Document.parse($group);
+        ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
         //System.out.println(groupDoc);
     }
 

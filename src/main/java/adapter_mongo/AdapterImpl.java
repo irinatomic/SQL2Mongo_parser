@@ -1,9 +1,10 @@
-package adapter;
+package adapter_mongo;
 
-import adapter.translator.*;
+import adapter_mongo.translator.*;
 import interfaces.Adapter;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.Document;
 import sql.tokens.Query;
 import java.util.*;
 
@@ -13,11 +14,11 @@ public class AdapterImpl implements Adapter {
 
     private String collectionName;                              //table name
     private List<Translator> translators;
-    private List<String> stages;
+    private List<Document> docs;
 
     public AdapterImpl(){
         this.translators = new ArrayList<>();
-        this.stages = new ArrayList<>();
+        this.docs = new ArrayList<>();
 
         LookupTranslator lookup = new LookupTranslator();
         MatchTranslator match = new MatchTranslator();
@@ -29,7 +30,7 @@ public class AdapterImpl implements Adapter {
 
     @Override
     public void adaptQueryForMongo(Query query) {
-
+        this.docs.clear();
         for(Translator t : translators)
             t.translate(query);
     }

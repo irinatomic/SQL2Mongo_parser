@@ -1,12 +1,11 @@
-package adapter.translator;
+package adapter_mongo.translator;
 
-import adapter.AdapterImpl;
+import adapter_mongo.*;
 import interfaces.ApplicationFramework;
+import org.bson.Document;
 import sql.SQLImplemet;
-import sql.tokens.Query;
-import sql.tokens.WhereClause;
-import sql.tokens.helpers.WhereInequality;
-import sql.tokens.helpers.WhereParameter;
+import sql.tokens.*;
+import sql.tokens.helpers.*;
 
 /* Used when we have multiple inequalities in WHERE clause
  * select ime, prezime from zaposleni where salary > 10 or nesto < 5 and name like '%ANA'
@@ -31,10 +30,12 @@ public class MatchTranslator extends Translator{
         if(wc == null)
             return;
 
-        String match = "{ $match: ";
-        match += turnWhereParameterToMongo(wc, wc.getParams().get(0), 0);
-        match += " }";
-        ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getStages().add(match);
+        String $match = "{ $match: ";
+        $match += turnWhereParameterToMongo(wc, wc.getParams().get(0), 0);
+        $match += " }";
+
+        Document doc = Document.parse($match);
+        ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
         //System.out.println(match);
     }
 

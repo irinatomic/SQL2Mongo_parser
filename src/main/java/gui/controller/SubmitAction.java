@@ -34,7 +34,6 @@ public class SubmitAction extends AbstractButtonAction{
 
         //Query the mongo db
         Database db = ApplicationFramework.getInstance().getDb();
-        //db.preformQuery();
         AppCore.getInstance().getTableModel().setRows(db.preformQuery());
     }
 }

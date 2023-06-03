@@ -1,6 +1,6 @@
-package database;
+package database.mongo;
 
-import adapter.AdapterImpl;
+import adapter_mongo.AdapterImpl;
 import com.mongodb.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
@@ -8,20 +8,10 @@ import database.data.Row;
 import interfaces.ApplicationFramework;
 import org.bson.Document;
 import database.utils.Constants;
-import org.bson.codecs.DocumentCodec;
 
 import java.util.*;
 
-
-/* IDEA
-String pipeline = "[ " +
-                "{ $group: { _id: { department_id: '$department_id', job_id: '$job_id' }, minSalary: { $min: '$salary' }, first_name: { $first: '$first_name' } } }, " +
-                "{ $project: { department_id: '$_id.department_id', job_id: '$_id.job_id', minSalary: 1, first_name: 1, _id: 0 } }, " +
-                "{ $sort: { ana: 1 } } " +
-                "]";
-    List<Document> pipelineDocuments = Document.parse(pipeline);
-    AggregateIterable<Document> result = collection.aggregate(pipelineDocuments);
- */
+// Querying the mongo db: https://stackoverflow.com/questions/55022849/running-custom-mongodb-queries-in-java
 
 public class MongoDB {
 
@@ -47,21 +37,10 @@ public class MongoDB {
         MongoDatabase database = connection.getDatabase(Constants.MYSQL_DB);
         MongoCollection<Document> collection = database.getCollection(collectionName);
 
-        String pipeline = "[ ";
-        for(String stage : adapter.getStages()) {
-            if(!stage.equals(""))
-                pipeline += stage + ", ";
-        }
-        pipeline += " ]";
-
-        System.out.println("PIPELINE: \n" + pipeline);
-
-//        List<Document> pipelineDocuments = new ArrayList<>();
-//        pipelineDocuments.add(Document.parse(pipeline));
-        //List<Document> pipelineDocuments = (List<Document>) Document.parse(pipeline, new DocumentCodec()).get("root", List.class);
-        List<Document> pipelineDocuments = (List<Document>) Document.parse(pipeline);
-        AggregateIterable<Document> result = collection.aggregate(pipelineDocuments);
+        List<Document> forQuery = adapter.getDocs();
+        AggregateIterable<Document> result = collection.aggregate(forQuery);
         MongoCursor<Document> cursor = result.iterator();
+        System.out.println("RESULT " + result);
 
         // pack every document into a row
         List<Row> rows = new ArrayList<>();
@@ -73,9 +52,11 @@ public class MongoDB {
                 String name = entry.getKey();
                 Object value = entry.getValue();
                 row.addField(name, value);
+                System.out.println("NAME " + name + " VALUE " + value);
             }
             rows.add(row);
         }
+        System.out.println("ROW NO: " + rows.size());
 
         terminateConnection();
         return rows;

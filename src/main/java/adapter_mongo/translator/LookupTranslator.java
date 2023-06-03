@@ -1,7 +1,8 @@
-package adapter.translator;
+package adapter_mongo.translator;
 
-import adapter.AdapterImpl;
+import adapter_mongo.AdapterImpl;
 import interfaces.ApplicationFramework;
+import org.bson.Document;
 import sql.tokens.*;
 import sql.tokens.helpers.JoinClause;
 
@@ -66,7 +67,7 @@ public class LookupTranslator extends Translator{
         int i = 1;
         for(JoinClause j : fc.getJoins()){
             String result = "result" + i++;
-            String lookup = "{\n" +
+            String $lookup = "{\n" +
                                 "$lookup: {\n" +
                                     "from: \"" + j.getTable2() + "\",\n" +
                                     "localField: \"" + j.getFieldTable1() + "\",\n" +
@@ -76,7 +77,8 @@ public class LookupTranslator extends Translator{
                             "},\n" +
                             "{ $unwind: \"$" + result + "\" }  ";
 
-            ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getStages().add(lookup);
+            Document doc = Document.parse($lookup);
+            ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
             //System.out.println(lookup);
         }
     }

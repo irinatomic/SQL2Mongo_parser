@@ -1,10 +1,9 @@
-package adapter.translator;
+package adapter_mongo.translator;
 
-import adapter.AdapterImpl;
+import adapter_mongo.AdapterImpl;
 import interfaces.ApplicationFramework;
-import sql.tokens.OrderByClause;
-import sql.tokens.Query;
-
+import org.bson.Document;
+import sql.tokens.*;
 import java.util.Map;
 
 public class SortTranslator extends Translator{
@@ -15,13 +14,14 @@ public class SortTranslator extends Translator{
 
         if(obc == null) return;
 
-        String sortDoc = "{ $sort: {";
+        String $sort = "{ $sort: {";
         for (Map.Entry<String, Integer> entry : obc.getParameters().entrySet()) {
-            sortDoc += entry.getKey() + ": " + entry.getValue() + ", ";
+            $sort += entry.getKey() + ": " + entry.getValue() + ", ";
         }
-        sortDoc += " } }";
+        $sort += " } }";
 
-        ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getStages().add(sortDoc);
+        Document doc = Document.parse($sort);
+        ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
         //System.out.println(sortDoc);
     }
 }

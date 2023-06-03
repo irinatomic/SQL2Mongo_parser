@@ -1,4 +1,4 @@
-package adapter.translator;
+package adapter_mongo.translator;
 
 import sql.tokens.Query;
 
