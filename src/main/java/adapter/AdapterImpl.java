@@ -4,7 +4,6 @@ import adapter.translator.*;
 import interfaces.Adapter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bson.Document;
 import sql.tokens.Query;
 import java.util.*;
 
@@ -13,19 +12,19 @@ import java.util.*;
 public class AdapterImpl implements Adapter {
 
     private String collectionName;                              //table name
-    private List<Document> documents;
     private List<Translator> translators;
-
     private List<String> stages;
+    private String mainCollecition;
 
     public AdapterImpl(){
-        this.documents = new ArrayList<>();
         this.translators = new ArrayList<>();
         this.stages = new ArrayList<>();
 
-        GroupTranslator st = new GroupTranslator();
-        SortTranslator obt = new SortTranslator();
-        translators.addAll(Arrays.asList(st, obt));
+       LookupTranslator lookup = new LookupTranslator();
+        GroupTranslator group = new GroupTranslator();
+        SortTranslator sort = new SortTranslator();
+        ProjectTranslator project = new ProjectTranslator();
+        translators.addAll(Arrays.asList(lookup, group, sort, project));
     }
 
     @Override

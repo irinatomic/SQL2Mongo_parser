@@ -6,10 +6,22 @@ Irina Tomic 72/22 RN
 
 **Kredencijali:** \
 bp_tim_58	\
+writer      \
 KVmBBnYAK7HZjs4E	
 
-"Digitalna televizija (npr. EON)
-Evidencija kanala, kategorija sadrzaja, konkretnog programa, video klub... + raspored TV programa (kada, na kom kanalu, u kom terminu se emituje koji sadrzaj u nekom periodu)"
+Our code accepts an sql select statement: 
 
+| clause   | parameters                                                     |
+|----------|----------------------------------------------------------------|
+| SELECT   | multiple parameters with aggregate functions, no aliases       |
+ | FROM     | up to 2 joins                                                  |
+ | WHERE    | either multiple inequalities or 1 simple subquery ('=' and 'in') |
+| GROUP BY | multiple parameters                                            |
+| ORDER BY | multiple parameters asc and desc                               |
 
-bp_tim_58	writer	KVmBBnYAK7HZjs4E
+ **The query cannot at the same time have a join and a subquery.** \
+ It complicates the mongo query (introduces a $pipeline to our $aggregate pipeline). 
+
+Subqueries are simple, like: \
+SELECT A FROM B WHERE C = 10
+
