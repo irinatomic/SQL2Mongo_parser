@@ -15,7 +15,14 @@ public class Check3 extends Check {
     @Override
     public boolean checkRule() {
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
-        Query query = sqlImplemet.getCurrQuery();
+        boolean queryGood = checkQuery(sqlImplemet.getCurrQuery());
+        boolean subqueryGood = checkQuery(sqlImplemet.getCurrSubquery());
+
+        return queryGood && subqueryGood;
+    }
+
+    private boolean checkQuery(Query query){
+        if(query == null) return true;
 
         List<String> mustNotHave = getParametersWithAggregate(query.getSelectClause());
         String whereClauseText = query.getWhereClause().getOriginalText();
@@ -29,7 +36,7 @@ public class Check3 extends Check {
                 return false;
             }
         }
-        
+
         return true;
     }
 

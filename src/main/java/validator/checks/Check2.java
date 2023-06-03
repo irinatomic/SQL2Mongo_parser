@@ -10,7 +10,7 @@ import sql.tokens.helpers.SelectParameter;
 
 public class Check2 extends Check {
 
-    //If there is an aggregate function in select:
+    //If there is a GROUP BY:
     //All select parameters (not aggregate functions) must be in GROUP BY
 
     @Override
@@ -19,7 +19,7 @@ public class Check2 extends Check {
         Query query = sqlImplemet.getCurrQuery();
 
         // First : check if there is an aggregate function in select clause
-        if(!query.getSelectClause().hasAnAggregateParameter())
+        if(query.getGroupByClause() == null)
             return true;
 
         List<String> mustHave = getParametersWithoutAggregate(query.getSelectClause());
