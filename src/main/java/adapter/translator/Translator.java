@@ -5,8 +5,8 @@ import sql.tokens.Query;
 /*  Mongo aggregation pipeline: https://www.tutorialsteacher.com/mongodb/aggregation
  *  $project          :        select
  *  $group            :        group + aggregate func. from select
- *  $lookup + $unwind :        primarily join. subqueries makes one if it doesn't already exist
- *  $match            :        basic having params; subquery adds $match to $lookup
+ *  $lookup + $unwind :        either for joins or for a subquery
+ *  $match            :        basic where inequalities
  *  $order            :        order by
  */
 

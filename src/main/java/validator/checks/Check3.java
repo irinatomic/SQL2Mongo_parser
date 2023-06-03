@@ -17,16 +17,14 @@ public class Check3 extends Check {
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
 
-        List<String> mustHave =getParametersWithAggregate(query.getSelectClause());
+        List<String> mustNotHave = getParametersWithAggregate(query.getSelectClause());
         String whereClauseText = query.getWhereClause().getOriginalText();
-        String havingClauseText = query.getHavingClause().getOriginalText();
 
         whereClauseText = whereClauseText.toLowerCase();
-        havingClauseText = havingClauseText.toLowerCase();
 
-        for(String s : mustHave){
+        for(String s : mustNotHave){
             s = s.toLowerCase();
-            if(whereClauseText.contains(s) || !havingClauseText.contains(s)) {
+            if(whereClauseText.contains(s)) {
                 ApplicationFramework.getInstance().getErrorGenerator().createErrorMessage(Error.AGGREGATE_FUNCTION_IN_WHERE);
                 return false;
             }
