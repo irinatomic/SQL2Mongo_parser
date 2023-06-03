@@ -10,12 +10,25 @@ import sql.tokens.helpers.SelectParameter;
 
 public class Check2 extends Check {
 
+    //If there is an aggregate function in select:
     //All select parameters (not aggregate functions) must be in GROUP BY
 
     @Override
     public boolean checkRule() {
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query query = sqlImplemet.getCurrQuery();
+
+        // First : check if there is an aggregate function in select clause
+        boolean  hasAggregate = false;
+        for(SelectParameter sp : query.getSelectClause().getParameters()){
+            if(sp.getAggregateFunction() != null){
+                hasAggregate = true;
+                break;
+            }
+        }
+
+        if(!hasAggregate)
+            return true;
 
         List<String> mustHave = getParametersWithoutAggregate(query.getSelectClause());
         String groupByText = query.getGroupByClause().getOriginalText();

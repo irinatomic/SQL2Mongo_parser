@@ -1,9 +1,11 @@
 package sql.tokens.helpers;
 
 import interfaces.ApplicationFramework;
+import lombok.Getter;
 import sql.operators.Comparison;
 import sql.operators.RegexConverter;
 
+@Getter
 public class WhereInequality {
 
     /* Inequality in Where

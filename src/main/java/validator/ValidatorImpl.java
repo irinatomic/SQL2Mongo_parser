@@ -11,12 +11,12 @@ public class ValidatorImpl implements Validator {
 
     public ValidatorImpl(){
         Check c1 = new Check1();
-        //Check c2 = new Check2();  -> upitna provera
+        Check c2 = new Check2();
         Check c3 = new Check3();
         Check c4 = new Check4();
 
         this.checks = new ArrayList<>();
-        checks.addAll(Arrays.asList(c1, c3, c4));
+        checks.addAll(Arrays.asList(c1, c2, c3, c4));
     }
 
     public void validateQuery(){
