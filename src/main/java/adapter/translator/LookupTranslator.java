@@ -74,10 +74,10 @@ public class LookupTranslator extends Translator{
                                     "as: \"" + result + "\"\n"+
                                "}\n" +
                             "},\n" +
-                            "{ $unwind: \"" + result + "\" }  ";
+                            "{ $unwind: \"$" + result + "\" }  ";
 
             ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getStages().add(lookup);
-            System.out.println(lookup);
+            //System.out.println(lookup);
         }
     }
 }

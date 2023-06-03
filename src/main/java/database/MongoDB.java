@@ -8,6 +8,8 @@ import database.data.Row;
 import interfaces.ApplicationFramework;
 import org.bson.Document;
 import database.utils.Constants;
+import org.bson.codecs.DocumentCodec;
+
 import java.util.*;
 
 
@@ -37,51 +39,46 @@ public class MongoDB {
     //TODO: argument query will probably be changed into a 'MongoCursor<Document> cursor' which will be created by the Adapter
     public List<Row> runQuery() {
 
-        // Documents are in the AdapterImpl
+        // Documents for mongo query are in the AdapterImpl
         AdapterImpl adapter = (AdapterImpl) ApplicationFramework.getInstance().getAdapter();
         String collectionName = adapter.getCollectionName();
-        System.out.println("Collection: " + collectionName);
 
         connectToDatabase();
         MongoDatabase database = connection.getDatabase(Constants.MYSQL_DB);
-        MongoCollection < Document > collection = database.getCollection(collectionName);
+        MongoCollection<Document> collection = database.getCollection(collectionName);
 
         String pipeline = "[ ";
-        for(String stage : adapter.getStages())
-            pipeline += stage + ", ";
+        for(String stage : adapter.getStages()) {
+            if(!stage.equals(""))
+                pipeline += stage + ", ";
+        }
         pipeline += " ]";
 
         System.out.println("PIPELINE: \n" + pipeline);
 
-//        List<Document> pipelineDocuments = (List<Document>) Document.parse(pipeline);
-//        AggregateIterable<Document> result = collection.aggregate(pipelineDocuments);
-
-
-        // send query to db
-//        MongoCursor<Document> cursor = database.getCollection("employees").aggregate(
-//                Arrays.asList(
-//                        Document.parse("{\n" + "$match: {} \n" + "}")
-//                )
-//        ).iterator();
+//        List<Document> pipelineDocuments = new ArrayList<>();
+//        pipelineDocuments.add(Document.parse(pipeline));
+        //List<Document> pipelineDocuments = (List<Document>) Document.parse(pipeline, new DocumentCodec()).get("root", List.class);
+        List<Document> pipelineDocuments = (List<Document>) Document.parse(pipeline);
+        AggregateIterable<Document> result = collection.aggregate(pipelineDocuments);
+        MongoCursor<Document> cursor = result.iterator();
 
         // pack every document into a row
-//        List<Row> rows = new ArrayList<>();
-//        while (cursor.hasNext()){
-//            Row row = new Row();
-//            row.setName(collection);
-//            Document d = cursor.next();
-//            for (Map.Entry<String, Object> entry : d.entrySet()) {
-//                String name = entry.getKey();
-//                Object value = entry.getValue();
-//                row.addField(name, value);
-//                //System.out.println("Name: " + name + ", Value: " + value);
-//            }
-//            rows.add(row);
-//        }
+        List<Row> rows = new ArrayList<>();
+        while (cursor.hasNext()){
+            Row row = new Row();
+            row.setName(collectionName);
+            Document d = cursor.next();
+            for (Map.Entry<String, Object> entry : d.entrySet()) {
+                String name = entry.getKey();
+                Object value = entry.getValue();
+                row.addField(name, value);
+            }
+            rows.add(row);
+        }
 
         terminateConnection();
-        return null;
-        //return rows;
+        return rows;
     }
 
     private void connectToDatabase() {

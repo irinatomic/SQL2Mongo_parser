@@ -22,6 +22,6 @@ public class SortTranslator extends Translator{
         sortDoc += " } }";
 
         ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getStages().add(sortDoc);
-        System.out.println(sortDoc);
+        //System.out.println(sortDoc);
     }
 }

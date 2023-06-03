@@ -25,7 +25,7 @@ public class ProjectTranslator extends Translator{
         projectDoc += "_id: 0 } }";
 
         ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getStages().add(projectDoc);
-        System.out.println(projectDoc);
+        //System.out.println(projectDoc);
     }
     private String aggrParamNewName(SelectParameter sp){
         return sp.getAggregateFunction().toString().replace("$", "") + sp.getName();

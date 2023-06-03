@@ -71,7 +71,7 @@ public class GroupTranslator extends Translator{
         }
 
         ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getStages().add(groupDoc);
-        System.out.println(groupDoc);
+        //System.out.println(groupDoc);
     }
 
     private String aggrParamNewName(SelectParameter sp){

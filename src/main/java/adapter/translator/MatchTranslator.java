@@ -35,7 +35,7 @@ public class MatchTranslator extends Translator{
         match += turnWhereParameterToMongo(wc, wc.getParams().get(0), 0);
         match += " }";
         ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getStages().add(match);
-        System.out.println(match);
+        //System.out.println(match);
     }
 
     private String turnWhereInequalityToMongo(WhereInequality wi){

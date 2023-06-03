@@ -12,6 +12,8 @@ import sql.tokens.Query;
 
 /* Test cases:
  * select first_name, last_name, min(salary) order by first_name, last_name DESC
+ * select first_name, last_name from employees join departments using (department_id)
+ *        where salary > 50 order by first_name
  */
 
 public abstract class Translator {
