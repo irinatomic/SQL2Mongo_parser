@@ -15,6 +15,23 @@ $match: {
       ]
     }
  */
+/*  Lookup for subqueries
+    SELECT * from orders where user_id ?? (select user_id from orders where refund_id = 123);
+  {
+    "$lookup": {
+      "from": "collection",
+      "localField": "user_id",
+      "foreignField": "user_id",
+      "as": "result"
+    }
+  }
+
+    ?? = in
+    $match: { user_id: { $in: db.orders.distinct("user_id", { refund_id: 123 }) } }
+
+    ?? = '='
+    $match: { "result.refund_id": 123 }
+ */
 
 public class MatchTranslator extends Translator{
 
@@ -23,16 +40,38 @@ public class MatchTranslator extends Translator{
 
         // We are supporting either inequailities or 1 subquery
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
-        if(sqlImplemet.getCurrSubquery() != null)
-            return;
+        Query supQuery = sqlImplemet.getCurrSubquery();
+        // if(sqlImplemet.getCurrSubquery() != null)
+        //     return;
 
         WhereClause wc = query.getWhereClause();
+        
         if(wc == null)
             return;
 
         String $match = "{ $match: ";
-        $match += turnWhereParameterToMongo(wc, wc.getParams().get(0), 0);
+        if(sqlImplemet.getCurrSubquery() == null){
+            $match += turnWhereParameterToMongo(wc, wc.getParams().get(0), 0);
+        }
+        else{
+            WhereClause swc = supQuery.getWhereClause();
+            String[] words = wc.getOriginalText().split(" ");
+            String[] pomWords = swc.getOriginalText().split(" ");
+            if(words[1].equalsIgnoreCase("in")){
+                //ove sam slpitova da bih pre sub dobio where words[0] in/= i SubQuery
+                $match += "{ " + words[0] + ": { $in: db.orders.distinct(\"" + words[0] + "\", { ";
+                //then i split WC in sunQuery to get parametars
+                $match += pomWords[0] + ": " + pomWords[2] + " })}}";
+            }
+            if(words[1].equals("=")){  
+                $match += "{ \" result." + pomWords[0] + "\": " + pomWords[2] + " }";
+            }
+            
+        }
+        
         $match += " }";
+
+        System.out.println($match);
 
         Document doc = Document.parse($match);
         ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
