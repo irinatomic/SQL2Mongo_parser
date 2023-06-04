@@ -57,7 +57,6 @@ public class MatchTranslator extends Translator{
         if(wi.getTable() != null)
             fullName = "\"" + adapter.getTablesInLookups().get(wi.getTable()) + "." + wi.getLeft() + "\"";
 
-        System.out.print("MATCH " + wi.toString());
         String res = "{ " + fullName + ": {" + wi.getComparison() + ": " + wi.getRight() + "} }";
         String resSubquery = "{ \"result." + wi.getLeft() + "\": {" + wi.getComparison() + ": " + wi.getRight() + "} }";
 

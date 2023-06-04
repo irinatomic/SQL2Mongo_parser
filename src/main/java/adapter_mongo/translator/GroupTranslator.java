@@ -24,6 +24,7 @@ public class GroupTranslator extends Translator{
 
     @Override
     public void translate(Query query) {
+        AdapterImpl adapter = (AdapterImpl) ApplicationFramework.getInstance().getAdapter();
         SelectClause sc = query.getSelectClause();
         GroupByClause gbc = query.getGroupByClause();
 
@@ -44,9 +45,14 @@ public class GroupTranslator extends Translator{
 
         String groupIdDoc = " _id: {";
         if(gbc != null){
-            for(String param : gbc.getParameters()){
-                String paramMongo = param + ": '$" + param + "', ";
-                groupIdDoc += paramMongo;
+            for (Map.Entry<String, String> entry : gbc.getParameters().entrySet()) {
+                String column = entry.getKey();
+                String table = entry.getValue();
+
+                if(table == null)
+                    groupIdDoc += column + ": '$" + column + "', ";
+                else
+                    groupIdDoc += column + ": '$" + adapter.getTablesInLookups().get(table) + "." + column + "', ";
             }
         }
         groupIdDoc += "}, ";
@@ -59,6 +65,7 @@ public class GroupTranslator extends Translator{
 
         if(!selectParamsAggr.isEmpty()){
             for(SelectParameter spna : selectParamsNOAggr){
+                if(gbc != null && gbc.containsColumn(spna.getName())) continue;
                 groupAggrDoc += spna.getName() + ": { $first: \"$" + spna.getName() + "\" }, ";
             }
         }
@@ -73,8 +80,7 @@ public class GroupTranslator extends Translator{
 
         if($group.equals(""))  return;
         Document doc = Document.parse($group);
-        ((AdapterImpl) ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
-        //System.out.println(groupDoc);
+        adapter.getDocs().add(doc);
     }
 
     private String aggrParamNewName(SelectParameter sp){

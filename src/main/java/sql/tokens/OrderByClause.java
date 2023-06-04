@@ -23,6 +23,9 @@ public class OrderByClause{
             p += " ";
             String[] paramParts = p.split(" ");
 
+            //String name = paramParts[0];
+
+
             int order = 1;
             if(paramParts.length == 2 && paramParts[1].equalsIgnoreCase("DESC"))
                 order = -1;

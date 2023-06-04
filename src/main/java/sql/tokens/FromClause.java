@@ -40,7 +40,11 @@ public class FromClause {
             if (selectBody instanceof PlainSelect) {
 
                 PlainSelect plainSelect = (PlainSelect) selectBody;
-                this.fromTable = plainSelect.getFromItem().toString();
+                String fromTableName = plainSelect.getFromItem().toString();
+                if(fromTableName.contains(" "))
+                    this.fromTable = fromTableName.split(" ")[0];
+                else
+                    this.fromTable = fromTableName;
                 List<Join> joins = plainSelect.getJoins();
 
                 if(joins != null){

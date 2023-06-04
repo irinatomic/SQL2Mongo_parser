@@ -13,6 +13,7 @@ public class ProjectTranslator extends Translator{
     @Override
     public void translate(Query query) {
         SelectClause sc = query.getSelectClause();
+        GroupByClause gbc = query.getGroupByClause();
         List<SelectParameter> selectParams = sc.getParameters();
         AdapterImpl adapter = (AdapterImpl)ApplicationFramework.getInstance().getAdapter();
         String ourCollection = adapter.getCollectionName();
@@ -27,10 +28,15 @@ public class ProjectTranslator extends Translator{
             if(sp.getAggregateFunction() != null)
                 name = aggrParamNewName(sp);
 
-            if(sp.getTable() == null || sp.getTable().equals(ourCollection))
-                $project += name + ": 1, ";
-            else
-                $project += name + ": \"$" + adapter.getTablesInLookups().get(sp.getTable()) + "." + name + "\", ";
+            if(gbc != null && gbc.containsColumn(name))
+                $project += name + ": \"$_id." + name + "\", ";
+
+            else {
+                if(sp.getTable() == null || sp.getTable().equals(ourCollection))
+                    $project += name + ": 1, ";
+                else
+                    $project += name + ": \"$" + adapter.getTablesInLookups().get(sp.getTable()) + "." + name + "\", ";
+            }
         }
         $project += "_id: 0 } }";
 
