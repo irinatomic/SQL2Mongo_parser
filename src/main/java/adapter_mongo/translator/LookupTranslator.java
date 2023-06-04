@@ -101,6 +101,7 @@ public class LookupTranslator extends Translator{
         //get subquery info
         SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
         Query subquery = sqlImplemet.getCurrSubquery();
+
         String table = subquery.getFromClause().getFromTable();
         String field = subquery.getSelectClause().getParameters().get(0).getName();
 
@@ -112,16 +113,20 @@ public class LookupTranslator extends Translator{
                                 "as: \"result\" \n" +
                                 "}\n" +
                             "}";
+        String $unwind = "{ $unwind: \"$result\" }, ";
 
         Document lookupDoc = Document.parse($lookup);
+        Document unwindDoc = Document.parse($unwind);
         AdapterImpl adapter = (AdapterImpl)ApplicationFramework.getInstance().getAdapter();
         adapter.getDocs().add(lookupDoc);
+        adapter.getDocs().add(unwindDoc);
+
+        System.out.println($lookup);
+        System.out.println($unwind);
 
         if(subquery.getWhereClause() != null){
             MatchTranslator mt = new MatchTranslator();
             mt.translate(subquery);
         }
-
-        System.out.println($lookup);
     }
 }

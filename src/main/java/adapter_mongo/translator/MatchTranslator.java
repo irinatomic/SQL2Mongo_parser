@@ -43,7 +43,7 @@ public class MatchTranslator extends Translator{
 
         String $match = "{ $match: ";
         $match += turnWhereParameterToMongo(query, wc, wc.getParams().get(0), 0);
-        $match += " }";
+        $match += " }, ";
 
         System.out.println($match);
         Document doc = Document.parse($match);
@@ -57,6 +57,7 @@ public class MatchTranslator extends Translator{
         if(wi.getTable() != null)
             fullName = "\"" + adapter.getTablesInLookups().get(wi.getTable()) + "." + wi.getLeft() + "\"";
 
+        System.out.print("MATCH " + wi.toString());
         String res = "{ " + fullName + ": {" + wi.getComparison() + ": " + wi.getRight() + "} }";
         String resSubquery = "{ \"result." + wi.getLeft() + "\": {" + wi.getComparison() + ": " + wi.getRight() + "} }";
 

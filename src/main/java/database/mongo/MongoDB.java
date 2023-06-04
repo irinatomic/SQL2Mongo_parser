@@ -38,6 +38,8 @@ public class MongoDB {
         MongoCollection<Document> collection = database.getCollection(collectionName);
 
         List<Document> forQuery = adapter.getDocs();
+//        for(Document d : forQuery)
+//            System.out.println(d.toString());
         AggregateIterable<Document> result = collection.aggregate(forQuery);
         MongoCursor<Document> cursor = result.iterator();
 

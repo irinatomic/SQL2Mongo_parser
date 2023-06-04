@@ -42,7 +42,8 @@ public class WhereInequality {
                 int dotIndex = fullName.indexOf(".");
                 this.table = fullName.substring(0, dotIndex);
                 this.left = fullName.substring(dotIndex+1);
-            }
+            } else
+                this.left = params[0];
             this.comparison = Comparison.getElement(params[1]);
 
             if(comparison.equals(Comparison.$regex))
