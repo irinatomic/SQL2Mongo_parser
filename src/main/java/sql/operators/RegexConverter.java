@@ -32,7 +32,7 @@ public class RegexConverter {
 
         //Only 'begins with' something
         if(beginningChars.length() == sqlLen-1 && sql.charAt(sqlLen-1) == '%'){
-            mongo += '^' + beginningChars + "/i";
+            mongo += '^' + beginningChars + ".*/i";
             //System.out.println("MONGO: " + mongo);
             return mongo;
         }

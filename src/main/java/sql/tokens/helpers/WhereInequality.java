@@ -15,6 +15,7 @@ public class WhereInequality {
     * D in (subquery)
     */
 
+    private String table;
     private String left;
     private Comparison comparison;
     private Object right;                       //String or Query
@@ -35,7 +36,13 @@ public class WhereInequality {
         else {
             s += " ";
             String[] params = s.split(" ");
-            this.left = params[0];
+            if(params[0].contains(".")){
+                String fullName = params[0];
+                System.out.print("FULLNAME "+ fullName + "\n");
+                int dotIndex = fullName.indexOf(".");
+                this.table = fullName.substring(0, dotIndex);
+                this.left = fullName.substring(dotIndex+1);
+            }
             this.comparison = Comparison.getElement(params[1]);
 
             if(comparison.equals(Comparison.$regex))

@@ -39,19 +39,25 @@ public class MatchTranslator extends Translator{
             return;
 
         WhereClause wc = query.getWhereClause();
-        System.out.println(wc.getOriginalText());
+        //System.out.println("Match translator - wc.originalText: " + wc.getOriginalText());
 
         String $match = "{ $match: ";
         $match += turnWhereParameterToMongo(query, wc, wc.getParams().get(0), 0);
         $match += " }";
 
-        //System.out.println($match);
+        System.out.println($match);
         Document doc = Document.parse($match);
         ((AdapterImpl)ApplicationFramework.getInstance().getAdapter()).getDocs().add(doc);
     }
 
     private String turnWhereInequalityToMongo(Query q, WhereInequality wi){
-        String res = "{ " + wi.getLeft() + ": {" + wi.getComparison() + ": " + wi.getRight() + "} }";
+        AdapterImpl adapter = (AdapterImpl)ApplicationFramework.getInstance().getAdapter();
+        String fullName = wi.getLeft();
+
+        if(wi.getTable() != null)
+            fullName = "\"" + adapter.getTablesInLookups().get(wi.getTable()) + "." + wi.getLeft() + "\"";
+
+        String res = "{ " + fullName + ": {" + wi.getComparison() + ": " + wi.getRight() + "} }";
         String resSubquery = "{ \"result." + wi.getLeft() + "\": {" + wi.getComparison() + ": " + wi.getRight() + "} }";
 
         if(q.isHasParent())

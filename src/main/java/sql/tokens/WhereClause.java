@@ -33,7 +33,6 @@ public class WhereClause {
             return;
         }
 
-
         int start = 0;
         for(int i = 0; i < words.length; i++){
             String curr = words[i];

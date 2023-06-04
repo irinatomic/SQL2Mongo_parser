@@ -9,8 +9,6 @@ import sql.SQLImplemet;
 import sql.tokens.*;
 import sql.tokens.helpers.JoinClause;
 
-import javax.print.Doc;
-
 // We will either have joins or either have a subquery
 // WHERE clause either has normal inequalities or 1 subquery
 
@@ -70,7 +68,8 @@ public class LookupTranslator extends Translator{
             adapter.getTablesInLookups().putIfAbsent(j.getTable2(), result);
             adapter.getDocs().add(lookupDoc);
             adapter.getDocs().add(unwindDoc);
-            //System.out.println($lookup);
+            System.out.println($lookup);
+            System.out.println($unwind);
         }
     }
 
@@ -123,6 +122,6 @@ public class LookupTranslator extends Translator{
             mt.translate(subquery);
         }
 
-        //System.out.println($lookup);
+        System.out.println($lookup);
     }
 }
