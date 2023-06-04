@@ -16,6 +16,8 @@ import sql.tokens.Query;
  * select last_name, first_name, department.department_name from employees join departments using (department_id)
  * select last_name, first_name, departments.department_name, locations.city
        from hr.employees join departments using (department_id) join locations using (location_id)
+ * select department_name from departments d join employees e on
+	  (e.employee_id = d.manager_id) where employees.last_name like 'H%'
  */
 
 public abstract class Translator {
