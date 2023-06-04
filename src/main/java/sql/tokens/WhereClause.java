@@ -26,6 +26,14 @@ public class WhereClause {
         query += " ";
         String[] words = query.split(" ");
 
+        //special case - only: nesto in (subquery)
+        if(query.contains("(")){
+            WhereParameter wp = new WhereParameter(query, "");
+            this.params.add(wp);
+            return;
+        }
+
+
         int start = 0;
         for(int i = 0; i < words.length; i++){
             String curr = words[i];

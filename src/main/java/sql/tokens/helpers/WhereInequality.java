@@ -24,13 +24,11 @@ public class WhereInequality {
         //if it has a subquery
         if(s.contains("(")){
             String subquery = s.substring(s.indexOf("(")+1, s.indexOf(")"));
-            System.out.println("SUBQUERY: " + subquery);
             this.right = ApplicationFramework.getInstance().getSql().parseSubqueryToSQLObject(subquery);
 
             String[] params = s.split(" ");
             this.left = params[0];
             this.comparison = Comparison.getElement(params[1]);
-
         }
 
         // if it doesn't have a subquery

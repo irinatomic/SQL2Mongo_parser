@@ -12,13 +12,14 @@ public class SQLImplemet implements SQL {
 
     @Override
     public void parseQueryToSQLObject(String query) {
-        this.currQuery = new Query();
+        this.currQuery = new Query(false);
+        this.currSubquery = null;
         currQuery.parseQueryToSQLObject(query);
     }
 
     @Override
     public Query parseSubqueryToSQLObject(String query){
-        Query q = new Query();
+        Query q = new Query(true);
         q.parseQueryToSQLObject(query);
         this.currSubquery = q;
         return q;

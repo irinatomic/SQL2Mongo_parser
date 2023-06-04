@@ -2,9 +2,6 @@ package adapter_mongo.translator;
 
 import adapter_mongo.AdapterImpl;
 import interfaces.ApplicationFramework;
-import sql.tokens.helpers.SelectParameter;
-
-import java.util.List;
 
 import org.bson.Document;
 
@@ -12,38 +9,10 @@ import sql.SQLImplemet;
 import sql.tokens.*;
 import sql.tokens.helpers.JoinClause;
 
+import javax.print.Doc;
+
 // We will either have joins or either have a subquery
 // WHERE clause either has normal inequalities or 1 subquery
-
-/* Lookup for joins (max 2 joins)
- * {
- *  $lookup: {
- *    from: "rightTable",
- *    localField: "lefTableField",
- *    foreignField: "rightTableField",
- *    as: "result1"
- *   }
- * } ,
- * { $unwind: "result1" }
- */
-
-/*  Lookup for subqueries
-    SELECT * from orders where user_id ?? (select user_id from orders where refund_id = 123);
-  {
-    "$lookup": {
-      "from": "collection",
-      "localField": "user_id",
-      "foreignField": "user_id",
-      "as": "result"
-    }
-  }
-
-    ?? = in
-    $match: { user_id: { $in: db.orders.distinct("user_id", { refund_id: 123 }) } }
-
-    ?? = '='
-    $match: { "result.refund_id": 123 }
- */
 
 public class LookupTranslator extends Translator{
 
@@ -62,24 +31,24 @@ public class LookupTranslator extends Translator{
 
         // Either we do the joins
         if(subQuery == null){
-          if(!fc.getJoins().isEmpty()){
-            System.out.println("ulazim u lookup");
-            lookupForJoin(fc);
-            return;
-          }
-        }else{
-          System.out.println("ima SUB al ulazim u lookup");
-          lookupForSubQuery(fc, wc);
-          return;
-        }
-        
-
-        // Or either we do the subquery
-        // ...
-        return;
+          if(!fc.getJoins().isEmpty())
+            lookupForJoins(fc);
+        } else
+          lookupForSubQuery(wc);
     }
 
-    private void lookupForJoin(FromClause fc){
+    /* Lookup for joins (max 2 joins)
+     * {
+     *  $lookup: {
+     *    from: "rightTable",
+     *    localField: "lefTableField",
+     *    foreignField: "rightTableField",
+     *    as: "result1"
+     *   }
+     * } ,
+     * { $unwind: "result1" }
+     */
+    private void lookupForJoins(FromClause fc){
 
         int i = 1;
         for(JoinClause j : fc.getJoins()){
@@ -92,38 +61,68 @@ public class LookupTranslator extends Translator{
                                     "as: \"" + result + "\"\n"+
                                "}\n" +
                             "},";
+            String $unwind = "{ $unwind: \"$" + result + "\" }, ";
 
             Document lookupDoc = Document.parse($lookup);
-            Document unwindDoc = Document.parse("{ $unwind: \"$" + result + "\" }, ");
+            Document unwindDoc = Document.parse($unwind);
+
             AdapterImpl adapter = (AdapterImpl)ApplicationFramework.getInstance().getAdapter();
+            adapter.getTablesInLookups().putIfAbsent(j.getTable2(), result);
             adapter.getDocs().add(lookupDoc);
             adapter.getDocs().add(unwindDoc);
-            adapter.getTablesInLookups().putIfAbsent(j.getTable2(), result);
-            System.out.println("Odradio Lookup");
-            System.out.println($lookup);
+            //System.out.println($lookup);
         }
     }
 
-    private void lookupForSubQuery(FromClause fc, WhereClause wc){
-      String[] words = wc.getOriginalText().split(" ");
-      int i = 1;
-      for(JoinClause j : fc.getJoins()){
-          String result = "result" + i++;
-          String $lookup = "{\n" +
-                              "$lookup: {\n" +
-                                  "from: \"" + j.getTable2() + "\",\n" +
-                                  "localField: \"" + words[0] + "\",\n" +
-                                  "foreignField: \"" + words[0] + "\",\n" +
-                                  "as: \"" + result + "\"\n"+
-                             "}\n" +
-                          "},";
+    /* Lookup for subquery
+     * OPTION 1 no where in subquery : select * from employees where department_id in (select department_id from departments)
+        db.employees.aggregate([
+          { $lookup: {
+              from: "departments",
+              localField: "department_id",
+              foreignField: "department_id",
+              as: "result"
+            } },
+        ])
 
-          Document lookupDoc = Document.parse($lookup);
-          AdapterImpl adapter = (AdapterImpl)ApplicationFramework.getInstance().getAdapter();
-          adapter.getDocs().add(lookupDoc);
-          adapter.getTablesInLookups().putIfAbsent(j.getTable2(), result);
-          System.out.println("Odradio Lookup");
-          System.out.println($lookup);
-      }
-  }
+    * We add the $match for the where in subquery:
+      select * from employees where department_id in
+        (select department_id from departments where location_id = 1700)
+      { $match: { "result.location_id": 1700 } }
+
+
+     * Multiple inequalities in where in subquery
+       select * from employees where department_id in
+        (select department_id from departments where location_id = 1700 and manager_id = 200)
+       { $match: {
+       $and: [ {"result.location_id": {$eq : 1700}}, {"result.manager_id": {$eq: 200}} ]
+       } }
+     */
+    private void lookupForSubQuery(WhereClause wc){
+        //get subquery info
+        SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
+        Query subquery = sqlImplemet.getCurrSubquery();
+        String table = subquery.getFromClause().getFromTable();
+        String field = subquery.getSelectClause().getParameters().get(0).getName();
+
+        String $lookup = "{\n" + "" +
+                            "$lookup: {\n" +
+                                "from: \"" + table + "\", \n" +
+                                "localField: \"" + field + "\", \n" +
+                                "foreignField: \"" + field + "\", \n " +
+                                "as: \"result\" \n" +
+                                "}\n" +
+                            "}";
+
+        Document lookupDoc = Document.parse($lookup);
+        AdapterImpl adapter = (AdapterImpl)ApplicationFramework.getInstance().getAdapter();
+        adapter.getDocs().add(lookupDoc);
+
+        if(subquery.getWhereClause() != null){
+            MatchTranslator mt = new MatchTranslator();
+            mt.translate(subquery);
+        }
+
+        //System.out.println($lookup);
+    }
 }

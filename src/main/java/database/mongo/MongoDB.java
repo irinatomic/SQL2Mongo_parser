@@ -37,12 +37,7 @@ public class MongoDB {
         MongoDatabase database = connection.getDatabase(Constants.MYSQL_DB);
         MongoCollection<Document> collection = database.getCollection(collectionName);
 
-        System.out.println(collectionName);
-
         List<Document> forQuery = adapter.getDocs();
-        for(Document d : forQuery){
-            System.out.println(d.toString());
-        }
         AggregateIterable<Document> result = collection.aggregate(forQuery);
         MongoCursor<Document> cursor = result.iterator();
 

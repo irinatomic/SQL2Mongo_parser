@@ -8,6 +8,7 @@ import net.sf.jsqlparser.statement.select.*;
 @Getter
 public class Query {
 
+    private boolean hasParent;
     private String text;
     private SelectClause selectClause;
     private FromClause fromClause;
@@ -15,6 +16,10 @@ public class Query {
     private HavingClause havingClause;
     private GroupByClause groupByClause;
     private OrderByClause orderByClause;
+
+    public Query(boolean hasParent){
+        this.hasParent = hasParent;
+    }
 
     public void parseQueryToSQLObject(String query) {
         this.text = query;
