@@ -21,13 +21,14 @@ public class WhereClause {
     }
 
     public void parseQueryToSQLObject(String query) {
+        query = query.toLowerCase();
         this.originalText = query;
 
         query += " ";
         String[] words = query.split(" ");
 
-        //special case - only: nesto in (subquery)
-        if(query.contains("(")){
+        //special case - we have a subquery
+        if(query.contains("(") && query.contains("select")){
             WhereParameter wp = new WhereParameter(query, "");
             this.params.add(wp);
             return;
