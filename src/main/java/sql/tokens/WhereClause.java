@@ -58,10 +58,5 @@ public class WhereClause {
 
         WhereParameter wp = new WhereParameter(left, "");
         this.params.add(wp);
-
-        //TEST
-//        System.out.println("WHERE CLAUSE: ");
-//        for(WhereParameter wp2 : params)
-//            System.out.println(wp2);
     }
 }
