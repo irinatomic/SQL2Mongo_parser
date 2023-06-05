@@ -24,6 +24,8 @@ import sql.tokens.Query;
       group by last_name, first_name
  * select last_name, first_name, max(salary) from employees
        group by last_name, first_name
+ * select first_name, last_name, departments.department_name from employees join departments using (department_id)
+       order by departments.department_name
  */
 
 public abstract class Translator {

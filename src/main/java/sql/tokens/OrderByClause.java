@@ -1,16 +1,17 @@
 package sql.tokens;
 
 import lombok.Getter;
+import sql.tokens.helpers.OrderByParameter;
+
 import java.util.*;
 
 @Getter
 public class OrderByClause{
 
-    //int: 1 (ASC) or -1 (DESC)
-    private Map<String, Integer> parameters;
+    private List<OrderByParameter> parameters;
 
     public OrderByClause() {
-        this.parameters = new LinkedHashMap<>();       //linked - so the param. keep the order thay are added in
+        this.parameters = new ArrayList<>();
     }
 
     public void parseQueryToSQLObject(String query) {
@@ -20,16 +21,8 @@ public class OrderByClause{
         Arrays.setAll(params, i -> params[i].trim());
 
         for(String p : params){
-            p += " ";
-            String[] paramParts = p.split(" ");
-
-            //String name = paramParts[0];
-
-
-            int order = 1;
-            if(paramParts.length == 2 && paramParts[1].equalsIgnoreCase("DESC"))
-                order = -1;
-            this.parameters.put(paramParts[0], order);
+            OrderByParameter obp = new OrderByParameter(p);
+            this.parameters.add(obp);
         }
 
     }
