@@ -1,6 +1,6 @@
 package app;
 
-import adapter_mongo.AdapterImpl;
+import adapter.AdapterImpl;
 import database.DBController;
 import errors.ErrorGeneratorImpl;
 import gui.SwingGui;
@@ -9,6 +9,7 @@ import interfaces.*;
 import lombok.Getter;
 import lombok.Setter;
 import sql.SQLImplemet;
+import sql.tokens.Query;
 import validator.ValidatorImpl;
 
 @Getter
@@ -43,6 +44,24 @@ public class AppCore {
             instance = new AppCore();
         }
         return instance;
+    }
+
+    public void beginPipeline(String text){
+
+        //Parse query
+        ApplicationFramework.getInstance().getSql().parseQueryToSQLObject(text);
+
+        //Validate
+        ApplicationFramework.getInstance().getValidator().validateQuery();
+
+        //Adapt query for Mongo
+        SQLImplemet sqlImplemet = (SQLImplemet) ApplicationFramework.getInstance().getSql();
+        Query query = sqlImplemet.getCurrQuery();
+        ApplicationFramework.getInstance().getAdapter().adaptQueryForMongo(query);
+
+        //Query the mongo db
+        Database db = ApplicationFramework.getInstance().getDb();
+        AppCore.getInstance().getTableModel().setRows(db.preformQuery());
     }
 
 }

@@ -1,6 +1,6 @@
 package database.mongo;
 
-import adapter_mongo.AdapterImpl;
+import adapter.AdapterImpl;
 import com.mongodb.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
@@ -13,16 +13,16 @@ import java.util.*;
 
 // Querying the mongo db: https://stackoverflow.com/questions/55022849/running-custom-mongodb-queries-in-java
 
-public class MongoDB {
+public class Executor {
 
-    private static MongoDB instance;
+    private static Executor instance;
     private MongoClient connection;
 
-    private MongoDB() { }
+    private Executor() { }
 
-    public static MongoDB getInstance(){
+    public static Executor getInstance(){
         if(instance == null)
-            instance = new MongoDB();
+            instance = new Executor();
         return instance;
     }
 
@@ -43,22 +43,7 @@ public class MongoDB {
         AggregateIterable<Document> result = collection.aggregate(forQuery);
         MongoCursor<Document> cursor = result.iterator();
 
-        // pack every document into a row
-        List<Row> rows = new ArrayList<>();
-        while (cursor.hasNext()){
-            Row row = new Row();
-            row.setName(collectionName);
-            Document d = cursor.next();
-            for (Map.Entry<String, Object> entry : d.entrySet()) {
-                String name = entry.getKey();
-                Object value = entry.getValue();
-                row.addField(name, value);
-                //System.out.println("NAME " + name + " VALUE " + value);
-            }
-            rows.add(row);
-        }
-        System.out.println("ROW NO: " + rows.size());
-
+        List<Row> rows = Packager.packageReply(cursor, collectionName);
         terminateConnection();
         return rows;
     }

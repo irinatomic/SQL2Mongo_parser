@@ -1,6 +1,6 @@
-package adapter_mongo.translator;
+package adapter.translator;
 
-import adapter_mongo.*;
+import adapter.*;
 import interfaces.ApplicationFramework;
 import org.bson.Document;
 import sql.SQLImplemet;

@@ -1,17 +1,17 @@
 package database;
 
 import database.data.Row;
-import database.mongo.MongoDB;
+import database.mongo.Executor;
 import interfaces.Database;
 import java.util.List;
 
 public class DBController implements Database {
 
-    private MongoDB instance;
+    private Executor instance;
 
     @Override
     public List<Row> preformQuery() {
-        instance = MongoDB.getInstance();
+        instance = Executor.getInstance();
         return instance.runQuery();
     }
 }

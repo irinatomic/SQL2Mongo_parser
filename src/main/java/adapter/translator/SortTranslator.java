@@ -1,6 +1,6 @@
-package adapter_mongo.translator;
+package adapter.translator;
 
-import adapter_mongo.AdapterImpl;
+import adapter.AdapterImpl;
 import interfaces.ApplicationFramework;
 import org.bson.Document;
 import sql.tokens.*;
@@ -14,9 +14,9 @@ public class SortTranslator extends Translator{
     public void translate(Query query) {
         AdapterImpl adapter = (AdapterImpl) ApplicationFramework.getInstance().getAdapter();
         OrderByClause obc = query.getOrderByClause();
-        List<OrderByParameter> params = obc.getParameters();
-
         if(obc == null) return;
+
+        List<OrderByParameter> params = obc.getParameters();
 
         String $sort = "{ $sort: {";
         for(OrderByParameter param : params){

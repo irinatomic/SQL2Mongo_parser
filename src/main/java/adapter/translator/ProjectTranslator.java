@@ -1,6 +1,6 @@
-package adapter_mongo.translator;
+package adapter.translator;
 
-import adapter_mongo.AdapterImpl;
+import adapter.AdapterImpl;
 import interfaces.ApplicationFramework;
 import org.bson.Document;
 import sql.tokens.*;

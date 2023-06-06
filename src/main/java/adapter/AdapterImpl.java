@@ -1,6 +1,6 @@
-package adapter_mongo;
+package adapter;
 
-import adapter_mongo.translator.*;
+import adapter.translator.*;
 import interfaces.Adapter;
 import lombok.Getter;
 import lombok.Setter;
