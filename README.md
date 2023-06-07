@@ -2,10 +2,13 @@
 
 ## SQL to Mongo parser
 
-This project is a part of the "Databases' university subject. This is a simple app \
-where the user can query the Mongo database using SQL. Our task was to give an object \
-representation of an SQL query, validate it and parse it to a Mongo query. Then we \
-query the Mongo database and show the results.
+This project is a part of the "Databases' university subject. This is a simple app where the user can \
+query the Mongo database using SQL. Our task was to give an object  representation of an SQL query, \
+validate it and parse it to a Mongo query. Then we query the Mongo database and show the results.
+
+<img src="src/main/resources/images/db_app.png"
+alt="Sql to Mongo parser"
+style="float: left; margin-right: 10px;" />
 
 ### Our pipeline
 
@@ -14,10 +17,6 @@ The pipeline can be seen in the app/AppCore file. It consists of:
 2. Validating the query (validator package) 
 3. Adapting the query for Mongo (adapter package) 
 4. Querying the Mongo DB (database package)
-
-<img src="src/main/resources/images/db_app.png"
-alt="Sql to Mongo parser"
-style="float: left; margin-right: 10px;" />
 
 ### Certain limitations of the project
 
