@@ -24,7 +24,7 @@ public class RegexConverter {
         String beginningChars = "";
         for(int i = 0; i < sqlLen; i++){
             Character curr = sql.charAt(i);
-            if(Character.isLetter(curr))
+            if(Character.isLetter(curr) || Character.isDigit(curr))
                 beginningChars += curr;
             else
                 break;
@@ -41,7 +41,7 @@ public class RegexConverter {
         String endingChars = "";
         for(int i = sqlLen-1; i >= 0; i--){
             Character curr = sql.charAt(i);
-            if(Character.isLetter(curr))
+            if(Character.isLetter(curr) || Character.isDigit(curr))
                 endingChars = curr + endingChars;
             else
                 break;
@@ -65,14 +65,14 @@ public class RegexConverter {
 
         for(int i = 0; i < sqlLen; i++){
             Character curr = sql.charAt(i);
-            if(Character.isLetter(curr))
+            if(Character.isLetter(curr) || Character.isDigit(curr))
                 mongo += curr;
             else
                 mongo += defaults.get(curr);
         }
 
         Character last = sql.charAt(sqlLen-1);
-        if(Character.isLetter(last))
+        if(Character.isLetter(last)  || Character.isDigit(last))
             mongo += "$";
 
         mongo += "/i";
