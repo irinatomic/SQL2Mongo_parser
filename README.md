@@ -1,3 +1,11 @@
+**Clanovi:** \
+Luka Labalo 82/22 RN \
+Irina Tomic 72/22 RN
+
+**Kredencijali:** \
+bp_tim_58	\
+KVmBBnYAK7HZjs4E
+
 ## SQL to Mongo parser
 
 This project is a part of the "Databases' university subject. This is a simple app where the user can \
